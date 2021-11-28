@@ -184,6 +184,6 @@ is the very first element in the post content */
 }
 
 .kg-bookmark-publisher::before {
-    content: "•";
+    /* content: "•"; */
     margin: 0 .5em;
 }
