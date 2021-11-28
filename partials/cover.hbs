@@ -4,6 +4,12 @@
     {{/if}}
 
     <div class="cover-content container">
+        {{#if @site.icon}}
+            <div class="cover-icon">
+                <img class="cover-icon-image" src="{{@site.icon}}" alt="{{@site.title}}">
+            </div>
+        {{/if}}
+
         {{#if @site.description}}
             <div class="cover-description">
                 {{#if @custom.email_signup_text}}
