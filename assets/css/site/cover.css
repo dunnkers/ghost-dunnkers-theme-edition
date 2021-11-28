@@ -50,6 +50,11 @@
     text-align: center;
 }
 
+.cover-icon {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
 .cover-description {
     font-size: 2.5rem;
     line-height: 1.3;
