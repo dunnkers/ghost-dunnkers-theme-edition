@@ -5,6 +5,8 @@
 {{else}}
     {{#foreach navigation}}
         <a class="menu-item menu-item-{{slug}}{{#if current}} menu-item-current{{/if}}" href="{{url absolute="true"}}">{{label}}</a>
-        <span class="sep">•</span>
+        {{#unless @last}}
+            <span class="sep">•</span>
+        {{/if}}
     {{/foreach}}
 {{/unless}}
