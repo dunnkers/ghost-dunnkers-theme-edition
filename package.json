@@ -110,6 +110,11 @@
                 "type": "boolean",
                 "default": true,
                 "group": "post"
+            },
+            "cover_icon_caption": {
+                "type": "text",
+                "default": "Hi there 👋🏻.",
+                "group": "homepage"
             }
         }
     },

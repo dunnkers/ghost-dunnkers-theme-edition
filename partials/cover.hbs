@@ -10,6 +10,12 @@
             </div>
         {{/if}}
 
+        {{#if @custom.cover_icon_caption}}
+            <div class="cover-icon-caption">
+                {{@cover_icon_caption}}
+            </div>
+        {{/if}}
+
         {{#if @site.description}}
             <div class="cover-description">
                 {{#if @custom.email_signup_text}}
