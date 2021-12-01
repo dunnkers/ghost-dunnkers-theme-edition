@@ -86,6 +86,7 @@
     line-height: 1.5;
     font-weight: 800;
     white-space: nowrap;
+    width: 40px;
 }
 
 .post-feed.expanded .feed-calendar {
