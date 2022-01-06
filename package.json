@@ -122,7 +122,8 @@
         "dev": "gulp",
         "test": "gscan .",
         "test:ci": "gscan --fatal --verbose .",
-        "zip": "gulp zip"
+        "zip": "gulp zip",
+        "build": "gulp build"
     },
     "devDependencies": {
         "autoprefixer": "10.4.0",
