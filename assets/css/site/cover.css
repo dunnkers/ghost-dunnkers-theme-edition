@@ -104,6 +104,7 @@
 }
 
 .cover-arrow {
+    display: none;
     position: absolute;
     bottom: 40px;
     left: 50%;
