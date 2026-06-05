@@ -1,15 +1,19 @@
 {{!< default}}
 
-<div class="content-area">
-    <main class="site-main">
-        {{#post}}
-            {{> content width="full"}}
-        {{/post}}
-        {{#is "post"}}
-            {{> related}}
-            {{> comment}}
-        {{/is}}
-    </main>
-</div>
+<main class="site-main">
 
-{{#contentFor "body_class"}}{{#if @site.logo}}{{#if @site.cover_image}} with-alt-header{{/if}}{{/if}}{{/contentFor}}
+    {{#post}}
+        {{> "content" width="full"}}
+    {{/post}}
+
+    {{#is "post"}}
+        {{#if @custom.show_related_posts}}
+            {{> "related-posts"}}
+        {{/if}}
+
+        {{#post}}
+            {{> "comments"}}
+        {{/post}}
+    {{/is}}
+
+</main>

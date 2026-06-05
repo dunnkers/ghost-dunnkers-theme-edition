@@ -9,6 +9,10 @@
     padding: 6vmin 0;
 }
 
-.with-alt-header .site-content {
+.is-head-brand .site-content {
     padding-top: max(8vmin, 5rem);
+}
+
+.page-template .site-content {
+    padding-block: 0;
 }
