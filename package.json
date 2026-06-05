@@ -113,7 +113,7 @@
             },
             "cover_icon_caption": {
                 "type": "text",
-                "default": "Hi there 👋🏻.",
+                "default": "Hi there!",
                 "group": "homepage"
             }
         }
