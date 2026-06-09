@@ -3,18 +3,22 @@
     text-align: center;
 }
 
+.page-template .single-header {
+    margin-top: var(--header-spacing);
+}
+
 .single-meta {
     margin-bottom: 1rem;
-    color: var(--secondary-text-color);
     font-size: 1.2rem;
     font-weight: 700;
+    color: var(--secondary-text-color);
     text-transform: uppercase;
 }
 
 .single-meta-item + .single-meta-item::before {
-    content: "\02022";
     padding: 0 0.3rem;
     font-family: serif;
+    content: "\02022";
 }
 
 .single-title {
@@ -22,19 +26,21 @@
     font-size: 4rem;
     line-height: 1.2;
     letter-spacing: -0.1rem;
+    word-break: break-word;
 }
 
-.has-serif-title .single-title {
-    font-family: var(--font-serif);
+.has-serif-title:not([class*=" gh-font-heading"]):not([class^="gh-font-heading"]) .single-title {
+    font-family: var(--gh-font-heading, var(--font-serif));
 }
 
 .single-excerpt {
     margin-top: 2rem;
     font-size: 1.8rem;
+    word-break: break-word;
 }
 
-.has-serif-body .single-excerpt {
-    font-family: var(--font-serif);
+.has-serif-body:not([class*=" gh-font-body"]):not([class^="gh-font-body"]) .single-excerpt {
+    font-family: var(--gh-font-body, var(--font-serif));
 }
 
 .single-media {
@@ -47,11 +53,11 @@
 }
 
 .single-cta {
-    margin-top: 4rem !important;
     padding: 3rem;
+    margin-top: 4rem !important;
+    text-align: center;
     border-top: 5px solid var(--brand-color);
     border-bottom: 1px solid var(--light-gray-color);
-    text-align: center;
 }
 
 .single-cta-title {
@@ -77,8 +83,8 @@
 
 .single-footer-left,
 .single-footer-right {
-    flex: 2;
     display: flex;
+    flex: 2;
 }
 
 .single-footer-right {
