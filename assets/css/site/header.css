@@ -19,3 +19,10 @@
         margin: 0;
     }
 }
+
+/* Hide the search UI. This site is published as a static export, where Ghost's
+   search (sodo-search) can't reach the Content API at runtime. Upstream's search
+   button markup and JS integration are intentionally left in place. */
+.gh-search {
+    display: none;
+}
