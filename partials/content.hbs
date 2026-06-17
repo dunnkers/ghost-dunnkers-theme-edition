@@ -28,9 +28,30 @@
                 </div>
             {{/if}}
 
+            {{#if @custom.show_share_links}}
             <div class="gh-meta-share">
-                <a href="#/share" class="gh-button-share">{{t "Share"}} {{> "icons/share"}}</a>
+                <div class="share">
+                    <a class="share-link share-link-x"
+                        href="https://x.com/intent/tweet?url={{url absolute="true"}}&text={{encode title}}"
+                        target="_blank" rel="noopener noreferrer">
+                        {{> icons/x}}
+                        Post
+                    </a>
+                    <a class="share-link share-link-linkedin"
+                        href="https://www.linkedin.com/shareArticle?mini=true&url={{url absolute="true"}}"
+                        target="_blank" rel="noopener noreferrer">
+                        {{> icons/linkedin}}
+                        Share
+                    </a>
+                    <a class="share-link share-link-facebook"
+                        href="https://www.facebook.com/sharer.php?u={{url absolute="true"}}"
+                        target="_blank" rel="noopener noreferrer">
+                        {{> icons/facebook}}
+                        Share
+                    </a>
+                </div>
             </div>
+            {{/if}}
 
             <div class="author-name" style="display: none;">{{authors}}</div>
 
