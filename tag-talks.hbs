@@ -37,14 +37,19 @@
         if (!sourceEl) return;
 
         var text = sourceEl.textContent;
-        var sepIndex = text.indexOf(' — ');
-        var talkName = sepIndex === -1 ? text : text.slice(0, sepIndex);
-        var location = sepIndex === -1 ? '' : text.slice(sepIndex + 3);
+        var newlineIndex = text.indexOf('\n');
+        var firstLine = newlineIndex === -1 ? text : text.slice(0, newlineIndex);
+        var content = newlineIndex === -1 ? '' : text.slice(newlineIndex + 1).trim();
+        var location = firstLine.replace(/\s*—\s*$/, '').trim();
 
-        var nameEl = document.createElement('div');
-        nameEl.className = 'talk-name';
-        nameEl.textContent = talkName;
-        sourceEl.replaceWith(nameEl);
+        if (content) {
+            var nameEl = document.createElement('div');
+            nameEl.className = 'talk-name';
+            nameEl.textContent = content;
+            sourceEl.replaceWith(nameEl);
+        } else {
+            sourceEl.remove();
+        }
 
         if (location) {
             var dateEl = article.querySelector('.feed-date');
