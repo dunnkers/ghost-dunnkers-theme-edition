@@ -172,6 +172,30 @@
     display: none;
 }
 
+.feed-conference {
+    margin-top: 0.5rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--color-secondary-text);
+}
+
+.talk-title-split {
+    display: flex;
+    flex-direction: column;
+}
+
+.talk-occasion {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.talk-name {
+    margin-top: 0.3rem;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--color-secondary-text);
+}
+
 .feed-right {
     display: flex;
     align-items: center;
