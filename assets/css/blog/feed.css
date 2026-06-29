@@ -180,16 +180,6 @@
     content: "\02022";
 }
 
-.talk-title-split {
-    display: flex;
-    flex-direction: column;
-}
-
-.talk-occasion {
-    font-size: 1.8rem;
-    font-weight: 700;
-}
-
 .talk-name {
     margin-top: 0.8rem;
     font-size: 1.5rem;

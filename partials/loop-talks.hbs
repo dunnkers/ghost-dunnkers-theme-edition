@@ -14,14 +14,14 @@
     </div>
 
     <div class="feed-wrapper">
-        <h2 class="feed-title talk-title-split">{{title}}</h2>
+        <h2 class="feed-title">{{title}}</h2>
+        {{#if custom_excerpt}}
+            <div class="talk-meta-source" hidden>{{custom_excerpt}}</div>
+        {{/if}}
         <div class="feed-right">
             <time class="feed-date" datetime="{{date format="YYYY-MM-DD"}}">
                 {{date published_at format="YYYY"}}
             </time>
-            {{#if custom_excerpt}}
-                <div class="feed-conference">{{custom_excerpt}}</div>
-            {{/if}}
             <div class="feed-visibility feed-visibility-{{visibility}}">
                 {{> "icons/star"}}
             </div>

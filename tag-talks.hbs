@@ -32,25 +32,26 @@
 </main>
 
 <script>
-    document.querySelectorAll('.talk-title-split').forEach(function (el) {
-        var text = el.textContent;
+    document.querySelectorAll('.feed').forEach(function (article) {
+        var sourceEl = article.querySelector('.talk-meta-source');
+        if (!sourceEl) return;
+
+        var text = sourceEl.textContent;
         var sepIndex = text.indexOf(' — ');
-        if (sepIndex === -1) return;
+        var talkName = sepIndex === -1 ? text : text.slice(0, sepIndex);
+        var location = sepIndex === -1 ? '' : text.slice(sepIndex + 3);
 
-        var occasion = text.slice(0, sepIndex);
-        var name = text.slice(sepIndex + 3);
-
-        el.textContent = '';
-
-        var occasionEl = document.createElement('span');
-        occasionEl.className = 'talk-occasion';
-        occasionEl.textContent = occasion;
-
-        var nameEl = document.createElement('span');
+        var nameEl = document.createElement('div');
         nameEl.className = 'talk-name';
-        nameEl.textContent = name;
+        nameEl.textContent = talkName;
+        sourceEl.replaceWith(nameEl);
 
-        el.appendChild(occasionEl);
-        el.appendChild(nameEl);
+        if (location) {
+            var dateEl = article.querySelector('.feed-date');
+            var confEl = document.createElement('div');
+            confEl.className = 'feed-conference';
+            confEl.textContent = location;
+            dateEl.insertAdjacentElement('afterend', confEl);
+        }
     });
 </script>
