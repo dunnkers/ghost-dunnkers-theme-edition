@@ -22,6 +22,11 @@
             <time class="feed-date" datetime="{{date format="YYYY-MM-DD"}}">
                 {{date published_at format="DD MMM YYYY"}}
             </time>
+            {{#has tag="#video"}}
+                <div class="feed-video" title="Video available">
+                    {{> "icons/youtube"}}
+                </div>
+            {{/has}}
             <div class="feed-visibility feed-visibility-{{visibility}}">
                 {{> "icons/star"}}
             </div>

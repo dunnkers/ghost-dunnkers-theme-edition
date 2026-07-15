@@ -223,6 +223,20 @@
     height: 14px;
 }
 
+.feed-video::before {
+    padding: 0 0.7rem;
+    font-family: serif;
+    font-size: 1rem;
+    line-height: 1;
+    content: "\02022";
+}
+
+.feed-video .icon {
+    width: 11px;
+    height: 11px;
+    vertical-align: middle;
+}
+
 .feed-length {
     white-space: nowrap;
 }

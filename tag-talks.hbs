@@ -37,10 +37,9 @@
         if (!sourceEl) return;
 
         var text = sourceEl.textContent;
-        var newlineIndex = text.indexOf('\n');
-        var firstLine = newlineIndex === -1 ? text : text.slice(0, newlineIndex);
-        var content = newlineIndex === -1 ? '' : text.slice(newlineIndex + 1).trim();
-        var location = firstLine.replace(/\s*—\s*$/, '').trim();
+        var dashIndex = text.indexOf('—');
+        var location = dashIndex === -1 ? text.trim() : text.slice(0, dashIndex).trim();
+        var content = dashIndex === -1 ? '' : text.slice(dashIndex + 1).trim();
 
         if (content) {
             var nameEl = document.createElement('div');
