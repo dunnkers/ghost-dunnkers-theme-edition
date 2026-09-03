@@ -52,6 +52,10 @@
         </div>
     </div>
 
-    <a class="u-permalink" href="{{url}}" aria-label="{{title}}"></a>
+    {{#has tag="#external-link"}}
+        <a class="u-permalink" href="{{canonical_url}}" aria-label="{{title}}" target="_blank" rel="noopener noreferrer"></a>
+    {{else}}
+        <a class="u-permalink" href="{{url}}" aria-label="{{title}}"></a>
+    {{/has}}
 
 </article>

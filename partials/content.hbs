@@ -68,6 +68,17 @@
         </header>
     {{/match}}
 
+    {{#is "post"}}
+    {{#has tag="#external-link"}}
+        <div class="gh-canvas">
+            <div class="single-external-notice">
+                {{t "This article was originally published on"}}
+                <a href="{{canonical_url}}" target="_blank" rel="noopener noreferrer">{{t "Xebia.com"}} {{> "icons/external-link"}}</a>
+            </div>
+        </div>
+    {{/has}}
+    {{/is}}
+
     <div class="single-content gh-content gh-canvas">
         {{content}}
     </div>

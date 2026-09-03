@@ -6,6 +6,7 @@ var st = 0;
 cover();
 featured();
 pagination(false);
+fixNavMoreToggleA11y();
 
 window.addEventListener('scroll', function () {
     'use strict';
@@ -45,6 +46,37 @@ function cover() {
         var element = cover.nextElementSibling;
         element.scrollIntoView({behavior: 'smooth', block: 'start'});
     });
+}
+
+function fixNavMoreToggleA11y() {
+    'use strict';
+    // @tryghost/shared-theme-assets' dropdown.js appends `.nav-more-toggle` as a
+    // direct child of <ul class="nav">, which is invalid list markup for a11y
+    // (lists must contain only <li> / script-supporting elements). It also
+    // rebuilds the nav on resize, so we watch for the toggle instead of patching once.
+    var nav = document.querySelector('.gh-head-menu .nav');
+    if (!nav) return;
+
+    var wrapInListItem = function (toggle) {
+        if (toggle.parentElement && toggle.parentElement.tagName === 'LI') return;
+        var li = document.createElement('li');
+        li.className = 'nav-more-toggle-wrap';
+        toggle.replaceWith(li);
+        li.appendChild(toggle);
+    };
+
+    var existing = nav.querySelector('.nav-more-toggle');
+    if (existing) wrapInListItem(existing);
+
+    new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
+            mutation.addedNodes.forEach(function (node) {
+                if (node.nodeType === 1 && node.classList && node.classList.contains('nav-more-toggle')) {
+                    wrapInListItem(node);
+                }
+            });
+        });
+    }).observe(nav, {childList: true});
 }
 
 function featured() {

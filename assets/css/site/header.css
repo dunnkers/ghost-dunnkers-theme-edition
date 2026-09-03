@@ -26,3 +26,11 @@
 .gh-search {
     display: none;
 }
+
+/* @tryghost/shared-theme-assets' dropdown.js appends the overflow "more" button
+   directly into <ul class="nav">, which fails the "lists contain only <li>"
+   a11y check. We wrap it in an <li> via JS (see main.js); display: contents
+   keeps it a flex item like the raw button, with no visual change. */
+.nav-more-toggle-wrap {
+    display: contents;
+}

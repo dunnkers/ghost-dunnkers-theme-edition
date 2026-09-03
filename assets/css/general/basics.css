@@ -1,7 +1,10 @@
 :root {
     --brand-color: var(--ghost-accent-color, #ff572f);
     --primary-text-color: #333;
-    --secondary-text-color: #999;
+    --secondary-text-color: #666;
+    /* Overrides @tryghost/shared-theme-assets' own --color-secondary-text (#999),
+       which fails WCAG AA contrast (2.85:1) against a white background. */
+    --color-secondary-text: #666;
     --white-color: #fff;
     --lighter-gray-color: #f6f6f6;
     --light-gray-color: #e6e6e6;
