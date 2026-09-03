@@ -27,10 +27,7 @@
     {{/match}}
 
     <div class="feed-wrapper">
-        <h2 class="feed-title">
-            {{title}}
-            {{#has tag="#external-link"}}{{> "external-badge"}}{{/has}}
-        </h2>
+        <h2 class="feed-title">{{title}}</h2>
         {{#if excerpt}}
             <div class="feed-excerpt">{{excerpt words="20"}}</div>
         {{/if}}
@@ -46,6 +43,7 @@
                     {{reading_time minute=(t "1 min read") minutes=(t "% min read")}}
                 </div>
             {{/if}}
+            {{#has tag="#external-link"}}{{> "feed-external"}}{{/has}}
             {{#if @site.comments_enabled}}
                 {{comment_count autowrap="div" class="feed-comments"}}
             {{/if}}

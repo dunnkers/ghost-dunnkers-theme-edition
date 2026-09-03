@@ -237,6 +237,27 @@
     vertical-align: middle;
 }
 
+.feed-external {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.feed-external::before {
+    padding: 0 0.7rem;
+    font-family: serif;
+    font-size: 1rem;
+    line-height: 1;
+    content: "\02022";
+}
+
+.feed-external .icon-external-link {
+    width: 11px;
+    height: 11px;
+}
+
 .feed-length {
     white-space: nowrap;
 }
