@@ -47,10 +47,13 @@
 .external-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.3em;
-    padding: 0.2em 0.7em;
-    margin-left: 0.3em;
-    font-size: 0.4em;
+    gap: 0.4em;
+    padding: 0.3em 0.9em;
+    margin-left: 0.4em;
+    /* Fixed size (matches .feed-right's meta-text convention) rather than
+       em-relative, since it sits inside headings of very different sizes
+       (a 1.8rem feed-title vs. a 4rem single-title). */
+    font-size: 1.4rem;
     font-weight: 700;
     line-height: 1.6;
     color: var(--secondary-text-color);

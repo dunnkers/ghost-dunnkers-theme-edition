@@ -5,7 +5,11 @@ var st = 0;
 
 cover();
 featured();
-pagination(false);
+pagination(false, function () {
+    // "Load more" fetches and appends post cards without a full page
+    // reload, so re-run this to label the newly-added external badges.
+    labelExternalHosts();
+});
 fixNavMoreToggleA11y();
 labelExternalHosts();
 
