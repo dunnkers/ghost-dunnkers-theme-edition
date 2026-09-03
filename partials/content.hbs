@@ -20,7 +20,10 @@
             </div>
             {{/is}}
 
-            <h1 class="single-title">{{title}}</h1>
+            <h1 class="single-title">
+                {{title}}
+                {{#has tag="#external-link"}}{{> "external-badge"}}{{/has}}
+            </h1>
 
             {{#if custom_excerpt}}
                 <div class="single-excerpt">
@@ -73,7 +76,9 @@
         <div class="gh-canvas">
             <div class="single-external-notice">
                 {{t "This article was originally published on"}}
-                <a href="{{canonical_url}}" target="_blank" rel="noopener noreferrer">{{t "Xebia.com"}} {{> "icons/external-link"}}</a>
+                <a class="single-external-notice-link" href="{{canonical_url}}" target="_blank" rel="noopener noreferrer" data-external-host="{{canonical_url}}">
+                    <span class="external-badge-label"></span>{{> "icons/external-link"}}
+                </a>
             </div>
         </div>
     {{/has}}

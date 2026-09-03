@@ -8,3 +8,9 @@
     width: 26px;
     height: 26px;
 }
+
+.icon-external-link {
+    width: 0.7em;
+    height: 0.7em;
+    flex-shrink: 0;
+}

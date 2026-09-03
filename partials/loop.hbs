@@ -27,7 +27,10 @@
     {{/match}}
 
     <div class="feed-wrapper">
-        <h2 class="feed-title">{{title}}</h2>
+        <h2 class="feed-title">
+            {{title}}
+            {{#has tag="#external-link"}}{{> "external-badge"}}{{/has}}
+        </h2>
         {{#if excerpt}}
             <div class="feed-excerpt">{{excerpt words="20"}}</div>
         {{/if}}

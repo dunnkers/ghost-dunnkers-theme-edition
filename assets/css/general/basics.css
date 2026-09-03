@@ -40,3 +40,22 @@
 :where(h1, h2, h3, h4, h5, h6) {
     font-weight: 800;
 }
+
+/* Badge for posts cross-posted elsewhere (tagged #external-link). The host
+   name is derived from canonical_url at runtime (see labelExternalHosts in
+   main.js) rather than hand-typed into the post title. */
+.external-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3em;
+    padding: 0.2em 0.7em;
+    margin-left: 0.3em;
+    font-size: 0.4em;
+    font-weight: 700;
+    line-height: 1.6;
+    color: var(--secondary-text-color);
+    white-space: nowrap;
+    vertical-align: middle;
+    background: var(--lighter-gray-color);
+    border-radius: 999px;
+}

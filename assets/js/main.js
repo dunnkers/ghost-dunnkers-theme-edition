@@ -7,6 +7,7 @@ cover();
 featured();
 pagination(false);
 fixNavMoreToggleA11y();
+labelExternalHosts();
 
 window.addEventListener('scroll', function () {
     'use strict';
@@ -77,6 +78,26 @@ function fixNavMoreToggleA11y() {
             });
         });
     }).observe(nav, {childList: true});
+}
+
+function labelExternalHosts() {
+    'use strict';
+    // Renders a "Xebia.com ⧉"-style label for #external-link posts, derived
+    // from canonical_url at render time instead of a hand-typed title suffix.
+    document.querySelectorAll('[data-external-host]').forEach(function (el) {
+        var rawUrl = el.getAttribute('data-external-host');
+        if (!rawUrl) return;
+
+        try {
+            var host = new URL(rawUrl).hostname.replace(/^www\./, '');
+            var label = host.charAt(0).toUpperCase() + host.slice(1);
+            var target = el.classList.contains('external-badge-label') ? el : el.querySelector('.external-badge-label');
+            if (target) target.textContent = label;
+            if (el.hasAttribute('hidden')) el.hidden = false;
+        } catch (e) {
+            // Malformed canonical_url: leave the badge hidden/empty rather than showing "undefined".
+        }
+    });
 }
 
 function featured() {
