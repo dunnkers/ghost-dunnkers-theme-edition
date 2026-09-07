@@ -7,10 +7,7 @@
 
         {{#if profile_image}}
             <div class="taxonomy-media u-placeholder square">
-                <picture>
-                    <source type="image/webp" srcset="{{img_url profile_image size="s" format="webp"}}">
-                    <img class="u-object-fit" src="{{img_url profile_image size="s"}}" alt="{{name}}">
-                </picture>
+                <img class="u-object-fit" src="{{img_url profile_image size="s"}}" alt="{{name}}">
             </div>
         {{/if}}
 
