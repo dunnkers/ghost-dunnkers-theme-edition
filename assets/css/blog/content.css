@@ -97,3 +97,10 @@
 .single-content.gh-content code {
     color: color-mix(in srgb, var(--ghost-accent-color) 80%, black);
 }
+
+/* Restore the intentionally muted (dark, no-underline) caption-link style —
+   without this, the rule above (being more specific in class count than the
+   upstream `.gh-content figcaption a`) would repaint caption links pink. */
+.single-content.gh-content figcaption a {
+    color: var(--color-darker-gray);
+}
