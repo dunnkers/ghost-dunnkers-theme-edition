@@ -12,17 +12,14 @@
             <article class="{{post_class}}">
                 <div class="u-placeholder horizontal">
                     {{#if feature_image}}
-                        <picture>
-                            <source type="image/webp" srcset="{{> "srcset-webp"}}" sizes="(min-width: 1256px) calc((1130px - 60px) / 3), (min-width: 992px) calc((90vw - 60px) / 3), (min-width: 768px) calc((90vw - 30px) / 2), 90vw">
-                            <img
-                                class="u-object-fit"
-                                srcset="{{> "srcset"}}"
-                                sizes="(min-width: 1256px) calc((1130px - 60px) / 3), (min-width: 992px) calc((90vw - 60px) / 3), (min-width: 768px) calc((90vw - 30px) / 2), 90vw"
-                                src="{{img_url feature_image size="m"}}"
-                                alt="{{title}}"
-                                loading="lazy"
-                            >
-                        </picture>
+                        <img
+                            class="u-object-fit"
+                            srcset="{{> "srcset"}}"
+                            sizes="(min-width: 1256px) calc((1130px - 60px) / 3), (min-width: 992px) calc((90vw - 60px) / 3), (min-width: 768px) calc((90vw - 30px) / 2), 90vw"
+                            src="{{img_url feature_image size="m"}}"
+                            alt="{{title}}"
+                            loading="lazy"
+                        >
                     {{/if}}
                 </div>
                 <h3 class="post-title">{{title}}</h3>

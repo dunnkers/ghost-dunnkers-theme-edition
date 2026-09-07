@@ -13,17 +13,14 @@
     {{#match @custom.feed_layout "!=" "Minimal"}}
         <div class="feed-image u-placeholder rectangle">
             {{#if feature_image}}
-                <picture>
-                    <source type="image/webp" srcset="{{> "srcset-webp"}}" sizes="(min-width: 576px) 160px, 90vw">
-                    <img
-                        class="u-object-fit"
-                        srcset="{{> "srcset"}}"
-                        sizes="(min-width: 576px) 160px, 90vw"
-                        src="{{img_url feature_image size="m"}}"
-                        alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}"
-                        loading="lazy"
-                    >
-                </picture>
+                <img
+                    class="u-object-fit"
+                    srcset="{{> "srcset"}}"
+                    sizes="(min-width: 576px) 160px, 90vw"
+                    src="{{img_url feature_image size="m"}}"
+                    alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}"
+                    loading="lazy"
+                >
             {{/if}}
         </div>
     {{/match}}
