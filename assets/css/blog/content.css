@@ -83,3 +83,17 @@
     /* content: "•"; */
     margin: 0 .5em;
 }
+
+/* The raw accent color fails WCAG AA contrast (4.5:1) for body text against
+   white and against the light-gray inline-code background — darken it here
+   for text specifically, while leaving --ghost-accent-color untouched for
+   buttons/borders/other UI elements. Selectors are deliberately more specific
+   than the upstream `.gh-content a` / `code` rules (rather than reusing them)
+   so cssnano's rule-merging can't collapse the override away.  */
+.single-content.gh-content a {
+    color: color-mix(in srgb, var(--ghost-accent-color) 80%, black);
+}
+
+.single-content.gh-content code {
+    color: color-mix(in srgb, var(--ghost-accent-color) 80%, black);
+}
