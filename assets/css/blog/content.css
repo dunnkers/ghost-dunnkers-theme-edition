@@ -108,7 +108,15 @@
 /* The product-card "accent" button (white text on --ghost-accent-color) also
    fails WCAG AA contrast (3.71:1 measured against the current accent) —
    darken its background the same way the link/code rule above does, rather
-   than leaving buttons untouched as noted there. */
-.single-content .kg-product-card-btn-accent {
+   than leaving buttons untouched as noted there.
+
+   Ghost core's own /public/cards.min.css (loaded after this stylesheet) sets
+   `.kg-product-card a.kg-product-card-btn-accent { background-color: var(--ghost-accent-color) }`
+   at specificity (0,2,1) — one class-count higher than plain
+   `.single-content .kg-product-card-btn-accent` (0,2,0), so it silently wins
+   the cascade and this override never actually applied live (Lighthouse
+   still measured the raw, unmixed accent color). Chain through
+   `.kg-product-card` too so this rule's class count (0,3,0) beats it. */
+.single-content .kg-product-card .kg-product-card-btn-accent {
     background-color: color-mix(in srgb, var(--ghost-accent-color) 80%, black);
 }
