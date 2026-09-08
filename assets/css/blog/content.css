@@ -112,3 +112,10 @@
 .single-content .kg-product-card-btn-accent {
     background-color: color-mix(in srgb, var(--ghost-accent-color) 80%, black);
 }
+
+/* Cursor affordance for the PhotoSwipe lightbox (wired up by
+   @tryghost/shared-theme-assets' lightbox() call in its bundled main.js —
+   see partials/pswp.hbs and assets/js/lib/photoswipe*.min.js). */
+.kg-gallery-image img {
+    cursor: zoom-in;
+}
