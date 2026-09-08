@@ -104,3 +104,11 @@
 .single-content.gh-content figcaption a {
     color: var(--color-darker-gray);
 }
+
+/* The product-card "accent" button (white text on --ghost-accent-color) also
+   fails WCAG AA contrast (3.71:1 measured against the current accent) —
+   darken its background the same way the link/code rule above does, rather
+   than leaving buttons untouched as noted there. */
+.single-content .kg-product-card-btn-accent {
+    background-color: color-mix(in srgb, var(--ghost-accent-color) 80%, black);
+}
