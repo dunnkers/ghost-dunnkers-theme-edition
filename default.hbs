@@ -8,6 +8,22 @@
 
     <link rel="stylesheet" href="{{asset "built/screen.css"}}">
 
+    {{#is "home"}}
+        {{#if @site.icon}}
+            <link rel="preload" as="image" href="{{@site.icon}}" fetchpriority="high">
+        {{/if}}
+        {{#if @site.cover_image}}
+            <link rel="preload" as="image" href="{{@site.cover_image}}" fetchpriority="high">
+        {{/if}}
+    {{/is}}
+    {{#is "post"}}
+        {{#post}}
+            {{#if feature_image}}
+                <link rel="preload" as="image" href="{{img_url feature_image size="l"}}" fetchpriority="high">
+            {{/if}}
+        {{/post}}
+    {{/is}}
+
     {{ghost_head}}
 </head>
 
