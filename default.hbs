@@ -128,6 +128,9 @@
 </script>
 
 <script src="{{asset "built/main.min.js"}}" defer></script>
+{{#is "home"}}
+    <script src="{{asset "built/home.min.js"}}" defer></script>
+{{/is}}
 
 {{ghost_foot}}
 
