@@ -70,7 +70,7 @@ function getJsFiles(version) {
     return jsFiles;
 }
 
-function mainJs(done) {
+function js(done) {
     pump([
         order(getJsFiles('v1'), {sourcemaps: true}),
         concat('main.min.js'),
@@ -79,21 +79,6 @@ function mainJs(done) {
         livereload()
     ], handleError(done));
 }
-
-function homeJs(done) {
-    pump([
-        order([
-            src(`assets/js/home-lib/*.js`),
-            src(`assets/js/home.js`),
-        ], {sourcemaps: true}),
-        concat('home.min.js'),
-        uglify(),
-        dest('assets/built/', {sourcemaps: '.'}),
-        livereload()
-    ], handleError(done));
-}
-
-const js = parallel(mainJs, homeJs);
 
 function zipper(done) {
     const filename = require('./package.json').name + '.zip';
