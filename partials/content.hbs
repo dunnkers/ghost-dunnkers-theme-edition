@@ -105,13 +105,13 @@
         <div class="single-footer-middle">
             {{#if @custom.show_author}}
             <div class="single-footer-top">
-                <h3 class="single-footer-title">Published by:</h3>
+                <h2 class="single-footer-title">Published by:</h2>
                 <div class="author-list">
                     {{#foreach authors}}
                         <div class="author-image-placeholder u-placeholder square">
                             <a href="{{url}}" title="{{name}}">
                                 {{#if profile_image}}
-                                    <img class="author-image u-object-fit" src="{{img_url profile_image size="xs"}}" alt="{{name}}" loading="lazy">
+                                    <img class="author-image u-object-fit" src="{{img_url profile_image size="xs"}}" width="150" height="150" alt="{{name}}" loading="lazy">
                                 {{else}}
                                     <span class="u-object-fit">{{> "icons/avatar"}}</span>
                                 {{/if}}
