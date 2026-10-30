@@ -189,6 +189,8 @@
 
 .feed-right {
     display: flex;
+    flex-wrap: wrap;
+    row-gap: 0.4rem;
     align-items: center;
     font-size: 1.3rem;
     color: var(--secondary-text-color);
@@ -223,7 +225,7 @@
     height: 14px;
 }
 
-.feed-video::before {
+.feed-badge::before {
     padding: 0 0.7rem;
     font-family: serif;
     font-size: 1rem;
@@ -231,7 +233,25 @@
     content: "\02022";
 }
 
-.feed-video .icon {
+.feed-date,
+.feed-conference {
+    white-space: nowrap;
+}
+
+.feed-badges {
+    display: flex;
+    align-items: center;
+}
+
+.feed-badge + .feed-badge {
+    margin-left: 0.6rem;
+}
+
+.feed-badge + .feed-badge::before {
+    content: none;
+}
+
+.feed-badge .icon {
     width: 11px;
     height: 11px;
     vertical-align: middle;

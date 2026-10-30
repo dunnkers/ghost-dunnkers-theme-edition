@@ -1,0 +1,32 @@
+<script>
+    // Excerpts are "<location> — <content>". Without a dash, the whole excerpt
+    // is the location, unless the template passes noDashIsContent=true.
+    var noDashIsContent = {{#if noDashIsContent}}true{{else}}false{{/if}};
+
+    document.querySelectorAll('.feed').forEach(function (article) {
+        var sourceEl = article.querySelector('.talk-meta-source');
+        if (!sourceEl) return;
+
+        var text = sourceEl.textContent;
+        var dashIndex = text.indexOf('—');
+        var location = dashIndex === -1 ? (noDashIsContent ? '' : text.trim()) : text.slice(0, dashIndex).trim();
+        var content = dashIndex === -1 ? (noDashIsContent ? text.trim() : '') : text.slice(dashIndex + 1).trim();
+
+        if (content) {
+            var nameEl = document.createElement('div');
+            nameEl.className = 'talk-name';
+            nameEl.textContent = content;
+            sourceEl.replaceWith(nameEl);
+        } else {
+            sourceEl.remove();
+        }
+
+        if (location) {
+            var dateEl = article.querySelector('.feed-date');
+            var confEl = document.createElement('div');
+            confEl.className = 'feed-conference';
+            confEl.textContent = location;
+            dateEl.insertAdjacentElement('afterend', confEl);
+        }
+    });
+</script>

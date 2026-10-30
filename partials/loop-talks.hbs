@@ -22,11 +22,28 @@
             <time class="feed-date" datetime="{{date format="YYYY-MM-DD"}}">
                 {{date published_at format="DD MMM YYYY"}}
             </time>
-            {{#has tag="#video"}}
-                <div class="feed-video" title="Video available">
-                    {{> "icons/youtube"}}
-                </div>
-            {{/has}}
+            <div class="feed-badges">
+                {{#has tag="#video"}}
+                    <div class="feed-badge feed-video" title="Video available">
+                        {{> "icons/youtube"}}
+                    </div>
+                {{/has}}
+                {{#has tag="#code"}}
+                    <div class="feed-badge feed-code" title="Code available">
+                        {{> "icons/github"}}
+                    </div>
+                {{/has}}
+                {{#has tag="#pdf"}}
+                    <div class="feed-badge feed-pdf" title="PDF available">
+                        {{> "icons/pdf"}}
+                    </div>
+                {{/has}}
+                {{#has tag="#journal"}}
+                    <div class="feed-badge feed-journal" title="Published in a journal">
+                        {{> "icons/journal"}}
+                    </div>
+                {{/has}}
+            </div>
             <div class="feed-visibility feed-visibility-{{visibility}}">
                 {{> "icons/star"}}
             </div>
