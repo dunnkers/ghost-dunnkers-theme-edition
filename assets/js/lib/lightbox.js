@@ -36,7 +36,29 @@ function loadPhotoSwipe() {
     ]).then(function (results) {
         var PhotoSwipe = results[0].default;
         return function (options) {
-            return new PhotoSwipe(Object.assign({}, template.dataset, options));
+            var pswp = new PhotoSwipe(Object.assign({}, template.dataset, options));
+            var inerted = [];
+
+            // PhotoSwipe renders a plain div[role=dialog], not a native modal
+            // <dialog>: name it, and make the rest of the page inert while
+            // it's open so screen readers can't wander out of it
+            pswp.on('firstUpdate', function () {
+                pswp.element.setAttribute('aria-label', template.dataset.dialogLabel);
+                Array.prototype.forEach.call(document.body.children, function (el) {
+                    if (el !== pswp.element && !el.inert) {
+                        el.inert = true;
+                        inerted.push(el);
+                    }
+                });
+            });
+            // Before PhotoSwipe returns focus to the page
+            pswp.on('close', function () {
+                inerted.forEach(function (el) {
+                    el.inert = false;
+                });
+            });
+
+            return pswp;
         };
     }).catch(function (err) {
         // Let the next click retry instead of caching the failure
