@@ -143,28 +143,39 @@ function featured() {
     var prev = controls.querySelector('[data-controls="prev"]');
     var next = controls.querySelector('[data-controls="next"]');
 
+    // aria-disabled instead of the disabled attribute: a disabled button
+    // drops keyboard focus to <body> when the user reaches either end.
+    var isDisabled = function (button) {
+        return button.getAttribute('aria-disabled') === 'true';
+    };
+
     var slideBy = function (direction) {
-        // One slide (plus the gap) per click; scroll snapping aligns the result.
+        // One slide (plus the gap) per click. The target is an absolute slide
+        // index rather than a relative scrollBy(), so a click during a smooth
+        // scroll continues from the slide being scrolled to, not from the
+        // mid-animation offset (which scroll snapping would round back).
         var step = slides.length > 1 ? slides[1].offsetLeft - first.offsetLeft : feed.clientWidth;
-        feed.scrollBy({left: direction * step, behavior: prefersReducedMotion() ? 'auto' : 'smooth'});
+        var position = feed.scrollLeft / step;
+        var index = direction > 0 ? Math.ceil(position - 0.05) : Math.floor(position + 0.05);
+        feed.scrollTo({left: (index + direction) * step, behavior: prefersReducedMotion() ? 'auto' : 'smooth'});
     };
 
     prev.addEventListener('click', function () {
-        slideBy(-1);
+        if (!isDisabled(prev)) slideBy(-1);
     });
     next.addEventListener('click', function () {
-        slideBy(1);
+        if (!isDisabled(next)) slideBy(1);
     });
 
     // Disable a button once the first/last slide is fully in view, and hide
     // both when everything fits, without listening to scroll events.
     var observer = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
-            var inView = entry.intersectionRatio >= 0.95;
-            if (entry.target === first) prev.disabled = inView;
-            if (entry.target === last) next.disabled = inView;
+            var inView = String(entry.intersectionRatio >= 0.95);
+            if (entry.target === first) prev.setAttribute('aria-disabled', inView);
+            if (entry.target === last) next.setAttribute('aria-disabled', inView);
         });
-        controls.hidden = prev.disabled && next.disabled;
+        controls.hidden = isDisabled(prev) && isDisabled(next);
     }, {root: feed, threshold: [0, 0.95]});
 
     observer.observe(first);

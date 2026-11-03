@@ -85,21 +85,21 @@ function getJsFiles(version) {
 
 function jsMain(done) {
     pump([
-        order(getJsFiles('v1'), {sourcemaps: true}),
+        order(getJsFiles('v1')),
         concat('main.min.js'),
         uglify(),
-        dest('assets/built/', {sourcemaps: '.'}),
+        dest('assets/built/'),
         livereload()
     ], handleError(done));
 }
 
 function jsPhotoSwipe(done) {
     pump([
-        order(getPhotoSwipeFiles('v1').map(file => src(file)), {sourcemaps: true}),
+        order(getPhotoSwipeFiles('v1').map(file => src(file))),
         concat('photoswipe.min.js'),
         uglify(),
         // The vendored sources are executable upstream; don't carry that over.
-        dest('assets/built/', {sourcemaps: '.', mode: 0o644}),
+        dest('assets/built/', {mode: 0o644}),
         livereload()
     ], handleError(done));
 }
@@ -131,7 +131,8 @@ function locales(done) {
 const localesWatcher = () => watch('./locales-local/**/*.json', locales);
 const hbsWatcher = () => watch(['*.hbs', 'partials/**/*.hbs'], hbs);
 const cssWatcher = () => watch('assets/css/**/*.css', css);
-const jsWatcher = () => watch('assets/js/**/*.js', js);
+// Only the theme's own JS changes; the PhotoSwipe bundle is vendored.
+const jsWatcher = () => watch('assets/js/**/*.js', jsMain);
 const watcher = parallel(hbsWatcher, cssWatcher, jsWatcher, localesWatcher);
 const build = series(css, js, locales);
 

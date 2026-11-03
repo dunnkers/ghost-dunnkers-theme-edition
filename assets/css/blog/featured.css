@@ -47,10 +47,15 @@
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
+}
+
+/* Hide the scrollbar only once main.js has revealed the prev/next buttons, so
+   desktop mouse users without JS can still scroll. */
+.featured-controls:not([hidden]) ~ .featured-feed {
     scrollbar-width: none;
 }
 
-.featured-feed::-webkit-scrollbar {
+.featured-controls:not([hidden]) ~ .featured-feed::-webkit-scrollbar {
     display: none;
 }
 
@@ -88,7 +93,7 @@
     transition: color 0.5s var(--animation-base);
 }
 
-.featured-controls button[disabled] {
+.featured-controls button[aria-disabled="true"] {
     color: var(--mid-gray-color);
     cursor: default;
 }

@@ -20,13 +20,6 @@
     }
 }
 
-/* Hide the search UI. This site is published as a static export, where Ghost's
-   search (sodo-search) can't reach the Content API at runtime. Upstream's search
-   button markup and JS integration are intentionally left in place. */
-.gh-search {
-    display: none;
-}
-
 /* @tryghost/shared-theme-assets' dropdown.js appends the overflow "more" button
    directly into <ul class="nav">, which fails the "lists contain only <li>"
    a11y check. We wrap it in an <li> via JS (see main.js); display: contents

@@ -13,8 +13,9 @@
     on its own. A preload of the feature image also couldn't match the size the
     <img> picks from its srcset, so it was downloaded twice. --}}
 
-    {{!-- Search is hidden for the static export (see .gh-search in site/header.css),
-    so don't load Ghost's search script either. --}}
+    {{!-- This site is published as a static export, where Ghost's search
+    (sodo-search) can't reach the Content API at runtime. So there are no search
+    buttons in the header, and Ghost's search script isn't loaded either. --}}
     {{ghost_head exclude="search"}}
 </head>
 
@@ -33,26 +34,15 @@
                         {{/if}}
                     </a>
                 </div>
-                <button class="gh-search gh-icon-btn" aria-label="{{t "Search this site"}}" data-ghost-search>{{> "icons/search"}}</button>
                 <button class="gh-burger" aria-label="{{t "Toggle menu"}}"></button>
             </div>
 
             <nav class="gh-head-menu">
                 {{navigation}}
-                {{#unless @site.members_enabled}}
-                    {{#match @custom.navigation_layout "Stacked"}}
-                        <button class="gh-search gh-icon-btn" aria-label="{{t "Search this site"}}" data-ghost-search>{{> "icons/search"}}</button>
-                    {{/match}}
-                {{/unless}}
             </nav>
 
             <div class="gh-head-actions">
-                {{#unless @site.members_enabled}}
-                    {{^match @custom.navigation_layout "Stacked"}}
-                        <button class="gh-search gh-icon-btn" aria-label="{{t "Search this site"}}" data-ghost-search>{{> "icons/search"}}</button>
-                    {{/match}}
-                {{else}}
-                    <button class="gh-search gh-icon-btn" aria-label="{{t "Search this site"}}" data-ghost-search>{{> "icons/search"}}</button>
+                {{#if @site.members_enabled}}
                     <div class="gh-head-members">
                         {{#unless @member}}
                             {{#unless @site.members_invite_only}}
@@ -65,7 +55,7 @@
                             <a class="gh-head-btn gh-btn gh-primary-btn" href="#/portal/account" data-portal="account">{{t "Account"}}</a>
                         {{/unless}}
                     </div>
-                {{/unless}}
+                {{/if}}
             </div>
         </div>
     </header>
