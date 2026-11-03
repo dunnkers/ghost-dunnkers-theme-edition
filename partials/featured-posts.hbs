@@ -7,25 +7,37 @@
             <h2 class="featured-title">{{@custom.featured_title}}</h2>
         {{/if}}
 
-        <div class="featured-feed">
-            {{#foreach featured}}
-            <article class="{{post_class}}">
-                <div class="u-placeholder horizontal">
-                    {{#if feature_image}}
-                        <img
-                            class="u-object-fit"
-                            srcset="{{> "srcset"}}"
-                            sizes="(min-width: 1256px) calc((1130px - 60px) / 3), (min-width: 992px) calc((90vw - 60px) / 3), (min-width: 768px) calc((90vw - 30px) / 2), 90vw"
-                            src="{{img_url feature_image size="m"}}"
-                            alt="{{title}}"
-                            loading="lazy"
-                        >
-                    {{/if}}
-                </div>
-                <h3 class="post-title">{{title}}</h3>
-                <a class="u-permalink" href={{url}} aria-label="{{title}}"></a>
-            </article>
-            {{/foreach}}
+        <div class="featured-slider">
+            {{!-- Revealed by featured() in main.js; without JS the feed is still swipeable/scrollable. --}}
+            <div class="featured-controls" hidden>
+                <button type="button" data-controls="prev" aria-controls="featured-feed" aria-label="Previous featured posts" disabled>
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path d="M20.547 22.107L14.44 16l6.107-6.12L18.667 8l-8 8 8 8 1.88-1.893z"></path></svg>
+                </button>
+                <button type="button" data-controls="next" aria-controls="featured-feed" aria-label="Next featured posts">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path d="M11.453 22.107L17.56 16l-6.107-6.12L13.333 8l8 8-8 8-1.88-1.893z"></path></svg>
+                </button>
+            </div>
+
+            <div class="featured-feed" id="featured-feed">
+                {{#foreach featured}}
+                <article class="{{post_class}}">
+                    <div class="u-placeholder horizontal">
+                        {{#if feature_image}}
+                            <img
+                                class="u-object-fit"
+                                srcset="{{> "srcset"}}"
+                                sizes="(min-width: 1256px) calc((1130px - 60px) / 3), (min-width: 992px) calc((90vw - 60px) / 3), (min-width: 768px) calc((90vw - 30px) / 2), 90vw"
+                                src="{{img_url feature_image size="m"}}"
+                                alt="{{title}}"
+                                loading="lazy"
+                            >
+                        {{/if}}
+                    </div>
+                    <h3 class="post-title">{{title}}</h3>
+                    <a class="u-permalink" href={{url}} aria-label="{{title}}"></a>
+                </article>
+                {{/foreach}}
+            </div>
         </div>
 
     </section>

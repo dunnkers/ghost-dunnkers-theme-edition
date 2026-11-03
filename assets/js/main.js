@@ -28,6 +28,11 @@ if (document.querySelector('.cover') && document.querySelector('.cover').classLi
     body.classList.add('portal-visible');
 }
 
+function prefersReducedMotion() {
+    'use strict';
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
 function portalButton() {
     'use strict';
     st = window.scrollY;
@@ -126,28 +131,43 @@ function fixGalleryLightbox() {
 
 function featured() {
     'use strict';
+    // The featured feed is a native CSS scroll-snap carousel (see
+    // blog/featured.css), so it works without JS; this only adds the
+    // prev/next buttons, which stay hidden if this never runs.
     var feed = document.querySelector('.featured-feed');
-    if (!feed) return;
+    var controls = document.querySelector('.featured-controls');
+    if (!feed || !controls) return;
 
-    tns({
-        container: feed,
-        controlsText: [
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M20.547 22.107L14.44 16l6.107-6.12L18.667 8l-8 8 8 8 1.88-1.893z"></path></svg>',
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M11.453 22.107L17.56 16l-6.107-6.12L13.333 8l8 8-8 8-1.88-1.893z"></path></svg>',
-        ],
-        gutter: 30,
-        loop: false,
-        nav: false,
-        responsive: {
-            0: {
-                items: 1,
-            },
-            768: {
-                items: 2,
-            },
-            992: {
-                items: 3,
-            },
-        },
+    var slides = feed.children;
+    var first = slides[0];
+    var last = slides[slides.length - 1];
+    var prev = controls.querySelector('[data-controls="prev"]');
+    var next = controls.querySelector('[data-controls="next"]');
+
+    var slideBy = function (direction) {
+        // One slide (plus the gap) per click; scroll snapping aligns the result.
+        var step = slides.length > 1 ? slides[1].offsetLeft - first.offsetLeft : feed.clientWidth;
+        feed.scrollBy({left: direction * step, behavior: prefersReducedMotion() ? 'auto' : 'smooth'});
+    };
+
+    prev.addEventListener('click', function () {
+        slideBy(-1);
     });
+    next.addEventListener('click', function () {
+        slideBy(1);
+    });
+
+    // Disable a button once the first/last slide is fully in view, and hide
+    // both when everything fits, without listening to scroll events.
+    var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            var inView = entry.intersectionRatio >= 0.95;
+            if (entry.target === first) prev.disabled = inView;
+            if (entry.target === last) next.disabled = inView;
+        });
+        controls.hidden = prev.disabled && next.disabled;
+    }, {root: feed, threshold: [0, 0.95]});
+
+    observer.observe(first);
+    observer.observe(last);
 }
