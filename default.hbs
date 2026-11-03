@@ -8,23 +8,14 @@
 
     <link rel="stylesheet" href="{{asset "built/screen.css"}}">
 
-    {{#is "home"}}
-        {{#if @site.icon}}
-            <link rel="preload" as="image" href="{{@site.icon}}" fetchpriority="high">
-        {{/if}}
-        {{#if @site.cover_image}}
-            <link rel="preload" as="image" href="{{@site.cover_image}}" fetchpriority="high">
-        {{/if}}
-    {{/is}}
-    {{#is "post"}}
-        {{#post}}
-            {{#if feature_image}}
-                <link rel="preload" as="image" href="{{img_url feature_image size="l"}}" fetchpriority="high">
-            {{/if}}
-        {{/post}}
-    {{/is}}
+    {{!-- No image preloads: the LCP candidates (cover image/icon, post feature
+    image) are plain <img fetchpriority="high"> tags the preload scanner finds
+    on its own. A preload of the feature image also couldn't match the size the
+    <img> picks from its srcset, so it was downloaded twice. --}}
 
-    {{ghost_head}}
+    {{!-- Search is hidden for the static export (see .gh-search in site/header.css),
+    so don't load Ghost's search script either. --}}
+    {{ghost_head exclude="search"}}
 </head>
 
 <body class="{{body_class}}{{{block "body_class"}}} is-head-{{#match @custom.navigation_layout "Logo on the left"}}left-logo{{else match @custom.navigation_layout "Logo in the middle"}}middle-logo{{else}}stacked{{/match}}{{#match @custom.title_font "=" "Elegant serif"}} has-serif-title{{/match}}{{#match @custom.body_font "=" "Elegant serif"}} has-serif-body{{/match}}{{^is "home"}}{{#if @site.cover_image}} is-head-brand{{/if}}{{/is}}">
