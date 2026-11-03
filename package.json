@@ -133,7 +133,7 @@
     },
     "devDependencies": {
         "@tryghost/shared-theme-assets": "2.7.5",
-        "@tryghost/theme-translations": "^0.0.9",
+        "@tryghost/theme-translations": "^0.0.22",
         "autoprefixer": "10.5.5",
         "beeper": "2.1.0",
         "cssnano": "9.0.3",
