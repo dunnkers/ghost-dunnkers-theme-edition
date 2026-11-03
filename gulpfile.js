@@ -55,9 +55,22 @@ function css(done) {
     ], handleError(done));
 }
 
+// PhotoSwipe is only used by the lightbox on posts and pages (where
+// partials/pswp.hbs renders), so it gets its own bundle, loaded only there,
+// instead of weighing down main.min.js on every page.
+function getPhotoSwipeFiles(version) {
+    return [
+        `${sharedThemeAssetsPath}/assets/js/${version}/lib/vendor/photoswipe.min.js`,
+        `${sharedThemeAssetsPath}/assets/js/${version}/lib/vendor/photoswipe-ui-default.min.js`,
+    ];
+}
+
 function getJsFiles(version) {
     const jsFiles = [
-        src(`${sharedThemeAssetsPath}/assets/js/${version}/lib/**/*.js`),
+        src([
+            `${sharedThemeAssetsPath}/assets/js/${version}/lib/**/*.js`,
+            ...getPhotoSwipeFiles(version).map(file => `!${file}`)
+        ]),
         src(`${sharedThemeAssetsPath}/assets/js/${version}/main.js`),
     ];
 
@@ -70,7 +83,7 @@ function getJsFiles(version) {
     return jsFiles;
 }
 
-function js(done) {
+function jsMain(done) {
     pump([
         order(getJsFiles('v1'), {sourcemaps: true}),
         concat('main.min.js'),
@@ -79,6 +92,19 @@ function js(done) {
         livereload()
     ], handleError(done));
 }
+
+function jsPhotoSwipe(done) {
+    pump([
+        order(getPhotoSwipeFiles('v1').map(file => src(file)), {sourcemaps: true}),
+        concat('photoswipe.min.js'),
+        uglify(),
+        // The vendored sources are executable upstream; don't carry that over.
+        dest('assets/built/', {sourcemaps: '.', mode: 0o644}),
+        livereload()
+    ], handleError(done));
+}
+
+const js = parallel(jsMain, jsPhotoSwipe);
 
 function zipper(done) {
     const filename = require('./package.json').name + '.zip';
