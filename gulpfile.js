@@ -20,6 +20,7 @@ const cssnano = require('cssnano');
 // translations support
 const { mergeLocales } = require('@tryghost/theme-translations/build');
 const sharedThemeAssetsPath = path.dirname(require.resolve('@tryghost/shared-theme-assets/package.json'));
+const photoswipePath = path.dirname(require.resolve('photoswipe'));
 
 function serve(done) {
     livereload.listen();
@@ -55,21 +56,13 @@ function css(done) {
     ], handleError(done));
 }
 
-// PhotoSwipe is only used by the lightbox on posts and pages (where
-// partials/pswp.hbs renders), so it gets its own bundle, loaded only there,
-// instead of weighing down main.min.js on every page.
-function getPhotoSwipeFiles(version) {
-    return [
-        `${sharedThemeAssetsPath}/assets/js/${version}/lib/vendor/photoswipe.min.js`,
-        `${sharedThemeAssetsPath}/assets/js/${version}/lib/vendor/photoswipe-ui-default.min.js`,
-    ];
-}
-
 function getJsFiles(version) {
     const jsFiles = [
+        // PhotoSwipe v4 and its lightbox are replaced by assets/js/lib/lightbox.js
         src([
             `${sharedThemeAssetsPath}/assets/js/${version}/lib/**/*.js`,
-            ...getPhotoSwipeFiles(version).map(file => `!${file}`)
+            `!${sharedThemeAssetsPath}/assets/js/${version}/lib/lightbox.js`,
+            `!${sharedThemeAssetsPath}/assets/js/${version}/lib/vendor/photoswipe*.js`,
         ]),
         src(`${sharedThemeAssetsPath}/assets/js/${version}/main.js`),
     ];
@@ -93,18 +86,24 @@ function jsMain(done) {
     ], handleError(done));
 }
 
-function jsPhotoSwipe(done) {
+// PhotoSwipe v5 is an ES module, lazy-loaded by assets/js/lib/lightbox.js
+// rather than concatenated into main.min.js
+function photoswipeJs(done) {
     pump([
-        order(getPhotoSwipeFiles('v1').map(file => src(file))),
-        concat('photoswipe.min.js'),
-        uglify(),
-        // The vendored sources are executable upstream; don't carry that over.
-        dest('assets/built/', {mode: 0o644}),
-        livereload()
+        src(`${photoswipePath}/photoswipe.esm.min.js`),
+        dest('assets/built/')
     ], handleError(done));
 }
 
-const js = parallel(jsMain, jsPhotoSwipe);
+function photoswipeCss(done) {
+    pump([
+        src(`${photoswipePath}/photoswipe.css`),
+        postcss([cssnano()]),
+        dest('assets/built/')
+    ], handleError(done));
+}
+
+const photoswipe = parallel(photoswipeJs, photoswipeCss);
 
 function zipper(done) {
     const filename = require('./package.json').name + '.zip';
@@ -131,10 +130,9 @@ function locales(done) {
 const localesWatcher = () => watch('./locales-local/**/*.json', locales);
 const hbsWatcher = () => watch(['*.hbs', 'partials/**/*.hbs'], hbs);
 const cssWatcher = () => watch('assets/css/**/*.css', css);
-// Only the theme's own JS changes; the PhotoSwipe bundle is vendored.
 const jsWatcher = () => watch('assets/js/**/*.js', jsMain);
 const watcher = parallel(hbsWatcher, cssWatcher, jsWatcher, localesWatcher);
-const build = series(css, js, locales);
+const build = series(css, jsMain, photoswipe, locales);
 
 exports.build = build;
 exports.zip = series(build, zipper);
