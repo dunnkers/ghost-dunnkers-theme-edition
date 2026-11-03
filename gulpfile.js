@@ -20,6 +20,7 @@ const cssnano = require('cssnano');
 // translations support
 const { mergeLocales } = require('@tryghost/theme-translations/build');
 const sharedThemeAssetsPath = path.dirname(require.resolve('@tryghost/shared-theme-assets/package.json'));
+const photoswipePath = path.dirname(require.resolve('photoswipe'));
 
 function serve(done) {
     livereload.listen();
@@ -57,7 +58,12 @@ function css(done) {
 
 function getJsFiles(version) {
     const jsFiles = [
-        src(`${sharedThemeAssetsPath}/assets/js/${version}/lib/**/*.js`),
+        // PhotoSwipe v4 and its lightbox are replaced by assets/js/lib/lightbox.js
+        src([
+            `${sharedThemeAssetsPath}/assets/js/${version}/lib/**/*.js`,
+            `!${sharedThemeAssetsPath}/assets/js/${version}/lib/lightbox.js`,
+            `!${sharedThemeAssetsPath}/assets/js/${version}/lib/vendor/photoswipe*.js`,
+        ]),
         src(`${sharedThemeAssetsPath}/assets/js/${version}/main.js`),
     ];
 
@@ -79,6 +85,25 @@ function js(done) {
         livereload()
     ], handleError(done));
 }
+
+// PhotoSwipe v5 is an ES module, lazy-loaded by assets/js/lib/lightbox.js
+// rather than concatenated into main.min.js
+function photoswipeJs(done) {
+    pump([
+        src(`${photoswipePath}/photoswipe.esm.min.js`),
+        dest('assets/built/')
+    ], handleError(done));
+}
+
+function photoswipeCss(done) {
+    pump([
+        src(`${photoswipePath}/photoswipe.css`),
+        postcss([cssnano()]),
+        dest('assets/built/')
+    ], handleError(done));
+}
+
+const photoswipe = parallel(photoswipeJs, photoswipeCss);
 
 function zipper(done) {
     const filename = require('./package.json').name + '.zip';
@@ -107,7 +132,7 @@ const hbsWatcher = () => watch(['*.hbs', 'partials/**/*.hbs'], hbs);
 const cssWatcher = () => watch('assets/css/**/*.css', css);
 const jsWatcher = () => watch('assets/js/**/*.js', js);
 const watcher = parallel(hbsWatcher, cssWatcher, jsWatcher, localesWatcher);
-const build = series(css, js, locales);
+const build = series(css, js, photoswipe, locales);
 
 exports.build = build;
 exports.zip = series(build, zipper);

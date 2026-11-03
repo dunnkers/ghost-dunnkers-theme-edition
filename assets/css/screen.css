@@ -1,4 +1,22 @@
-@import "@tryghost/shared-theme-assets/assets/css/v1/screen.css";
+/* Shared theme styles, minus vendor/pswp.css (PhotoSwipe v4): v5 brings its own,
+   lazy-loaded with the lightbox (see assets/js/lib/lightbox.js) */
+@import "@tryghost/shared-theme-assets/assets/css/v1/vars.css";
+@import "@tryghost/shared-theme-assets/assets/css/v1/components/reset.css";
+@import "@tryghost/shared-theme-assets/assets/css/v1/components/global.css";
+@import "@tryghost/shared-theme-assets/assets/css/v1/components/layout.css";
+@import "@tryghost/shared-theme-assets/assets/css/v1/components/header.css";
+@import "@tryghost/shared-theme-assets/assets/css/v1/components/cover.css";
+@import "@tryghost/shared-theme-assets/assets/css/v1/components/loop.css";
+@import "@tryghost/shared-theme-assets/assets/css/v1/components/post-card.css";
+@import "@tryghost/shared-theme-assets/assets/css/v1/components/article.css";
+@import "@tryghost/shared-theme-assets/assets/css/v1/components/content.css";
+@import "@tryghost/shared-theme-assets/assets/css/v1/components/comments.css";
+@import "@tryghost/shared-theme-assets/assets/css/v1/components/cta.css";
+@import "@tryghost/shared-theme-assets/assets/css/v1/components/card.css";
+@import "@tryghost/shared-theme-assets/assets/css/v1/components/pagination.css";
+@import "@tryghost/shared-theme-assets/assets/css/v1/components/navigation.css";
+@import "@tryghost/shared-theme-assets/assets/css/v1/components/button.css";
+@import "@tryghost/shared-theme-assets/assets/css/v1/components/footer.css";
 @import "general/fonts.css";
 @import "general/basics.css";
 @import "general/button.css";
