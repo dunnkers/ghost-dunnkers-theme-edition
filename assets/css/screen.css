@@ -17,7 +17,6 @@
 @import "@tryghost/shared-theme-assets/assets/css/v1/components/navigation.css";
 @import "@tryghost/shared-theme-assets/assets/css/v1/components/button.css";
 @import "@tryghost/shared-theme-assets/assets/css/v1/components/footer.css";
-@import "general/fonts.css";
 @import "general/basics.css";
 @import "general/button.css";
 @import "general/form.css";
@@ -35,7 +34,6 @@
 @import "blog/navigation.css";
 @import "blog/related.css";
 @import "blog/taxonomy.css";
-@import "misc/tiny-slider.css";
 @import "misc/utils.css";
 @import "misc/portal.css";
 @import "misc/animations.css";

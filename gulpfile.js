@@ -76,12 +76,12 @@ function getJsFiles(version) {
     return jsFiles;
 }
 
-function js(done) {
+function jsMain(done) {
     pump([
-        order(getJsFiles('v1'), {sourcemaps: true}),
+        order(getJsFiles('v1')),
         concat('main.min.js'),
         uglify(),
-        dest('assets/built/', {sourcemaps: '.'}),
+        dest('assets/built/'),
         livereload()
     ], handleError(done));
 }
@@ -130,9 +130,9 @@ function locales(done) {
 const localesWatcher = () => watch('./locales-local/**/*.json', locales);
 const hbsWatcher = () => watch(['*.hbs', 'partials/**/*.hbs'], hbs);
 const cssWatcher = () => watch('assets/css/**/*.css', css);
-const jsWatcher = () => watch('assets/js/**/*.js', js);
+const jsWatcher = () => watch('assets/js/**/*.js', jsMain);
 const watcher = parallel(hbsWatcher, cssWatcher, jsWatcher, localesWatcher);
-const build = series(css, js, photoswipe, locales);
+const build = series(css, jsMain, photoswipe, locales);
 
 exports.build = build;
 exports.zip = series(build, zipper);

@@ -33,10 +33,80 @@
     border-bottom: 1px solid var(--light-gray-color);
 }
 
-.featured-feed {
-    opacity: 0;
+.featured-slider {
+    position: relative;
 }
 
-.featured-feed.tns-slider {
-    opacity: 1;
+/* Native scroll-snap carousel: visible and swipeable before any JS runs.
+   main.js only wires up the prev/next buttons. */
+.featured-feed {
+    display: grid;
+    grid-auto-columns: 100%;
+    grid-auto-flow: column;
+    gap: 30px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+}
+
+/* Hide the scrollbar only once main.js has revealed the prev/next buttons, so
+   desktop mouse users without JS can still scroll. */
+.featured-controls:not([hidden]) ~ .featured-feed {
+    scrollbar-width: none;
+}
+
+.featured-controls:not([hidden]) ~ .featured-feed::-webkit-scrollbar {
+    display: none;
+}
+
+.featured-feed > .post {
+    scroll-snap-align: start;
+}
+
+@media (min-width: 768px) {
+    .featured-feed {
+        grid-auto-columns: calc((100% - 30px) / 2);
+    }
+}
+
+@media (min-width: 992px) {
+    .featured-feed {
+        grid-auto-columns: calc((100% - 60px) / 3);
+    }
+}
+
+.featured-controls button {
+    position: absolute;
+    top: -86px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    color: var(--dark-gray-color);
+    text-align: center;
+    cursor: pointer;
+    background-color: var(--white-color);
+    border: 1px solid var(--light-gray-color);
+    border-radius: 3px;
+    transition: color 0.5s var(--animation-base);
+}
+
+.featured-controls button[aria-disabled="true"] {
+    color: var(--mid-gray-color);
+    cursor: default;
+}
+
+.featured-controls button svg {
+    width: 18px;
+    height: 18px;
+}
+
+.featured-controls [data-controls="prev"] {
+    right: 34px;
+}
+
+.featured-controls [data-controls="next"] {
+    right: 0;
 }
