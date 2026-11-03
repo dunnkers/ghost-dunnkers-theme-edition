@@ -6,11 +6,15 @@ body:not(.with-full-cover) .cover {
     position: relative;
     display: flex;
     height: 100vh;
+    /* Small viewport units: the height with mobile browser toolbars shown, so
+       the cover neither hides behind them nor resizes while scrolling. */
+    height: 100svh;
     overflow: hidden;
 }
 
 .with-full-cover .cover.half {
     height: 60vh;
+    height: 60svh;
 }
 
 .with-full-cover .cover::before {

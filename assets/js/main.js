@@ -1,10 +1,9 @@
 var html = document.documentElement;
 var body = document.body;
-var timeout;
-var st = 0;
 
 cover();
 featured();
+portalButton();
 pagination(false, function () {
     // "Load more" fetches and appends post cards without a full page
     // reload, so re-run this to label the newly-added external badges.
@@ -14,20 +13,6 @@ fixNavMoreToggleA11y();
 labelExternalHosts();
 fixGalleryLightbox();
 
-window.addEventListener('scroll', function () {
-    'use strict';
-    if (body.classList.contains('home-template') && body.classList.contains('with-full-cover') && !document.querySelector('.cover').classList.contains('half')) {
-        if (timeout) {
-            window.cancelAnimationFrame(timeout);
-        }
-        timeout = window.requestAnimationFrame(portalButton);
-    }
-});
-
-if (document.querySelector('.cover') && document.querySelector('.cover').classList.contains('half')) {
-    body.classList.add('portal-visible');
-}
-
 function prefersReducedMotion() {
     'use strict';
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -35,13 +20,27 @@ function prefersReducedMotion() {
 
 function portalButton() {
     'use strict';
-    st = window.scrollY;
+    var cover = document.querySelector('.cover');
+    if (!cover) return;
 
-    if (st > 300) {
+    if (cover.classList.contains('half')) {
         body.classList.add('portal-visible');
-    } else {
-        body.classList.remove('portal-visible');
+        return;
     }
+
+    if (!body.classList.contains('home-template') || !body.classList.contains('with-full-cover')) return;
+
+    // Show the Portal button once the reader has scrolled 300px into the
+    // full-screen cover. A sentinel at that offset (see misc/portal.css) is
+    // watched instead of running a handler on every scroll event.
+    var sentinel = document.createElement('div');
+    sentinel.className = 'cover-sentinel';
+    cover.appendChild(sentinel);
+
+    new IntersectionObserver(function (entries) {
+        var entry = entries[0];
+        body.classList.toggle('portal-visible', !entry.isIntersecting && entry.boundingClientRect.top < 0);
+    }).observe(sentinel);
 }
 
 function cover() {
@@ -55,7 +54,7 @@ function cover() {
 
     document.querySelector('.cover-arrow').addEventListener('click', function () {
         var element = cover.nextElementSibling;
-        element.scrollIntoView({behavior: 'smooth', block: 'start'});
+        element.scrollIntoView({behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start'});
     });
 }
 
