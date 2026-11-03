@@ -40,7 +40,9 @@
                 "width": 1920
             }
         },
-        "card_assets": true,
+        "card_assets": {
+            "include": ["blockquote", "bookmark", "callout", "gallery", "product", "video"]
+        },
         "custom": {
             "navigation_layout": {
                 "type": "select",
