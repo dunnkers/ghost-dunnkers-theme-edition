@@ -8,23 +8,15 @@
 
     <link rel="stylesheet" href="{{asset "built/screen.css"}}">
 
-    {{#is "home"}}
-        {{#if @site.icon}}
-            <link rel="preload" as="image" href="{{@site.icon}}" fetchpriority="high">
-        {{/if}}
-        {{#if @site.cover_image}}
-            <link rel="preload" as="image" href="{{@site.cover_image}}" fetchpriority="high">
-        {{/if}}
-    {{/is}}
-    {{#is "post"}}
-        {{#post}}
-            {{#if feature_image}}
-                <link rel="preload" as="image" href="{{img_url feature_image size="l"}}" fetchpriority="high">
-            {{/if}}
-        {{/post}}
-    {{/is}}
+    {{!-- No image preloads: the LCP candidates (cover image/icon, post feature
+    image) are plain <img fetchpriority="high"> tags the preload scanner finds
+    on its own. A preload of the feature image also couldn't match the size the
+    <img> picks from its srcset, so it was downloaded twice. --}}
 
-    {{ghost_head}}
+    {{!-- This site is published as a static export, where Ghost's search
+    (sodo-search) can't reach the Content API at runtime. So there are no search
+    buttons in the header, and Ghost's search script isn't loaded either. --}}
+    {{ghost_head exclude="search"}}
 </head>
 
 <body class="{{body_class}}{{{block "body_class"}}} is-head-{{#match @custom.navigation_layout "Logo on the left"}}left-logo{{else match @custom.navigation_layout "Logo in the middle"}}middle-logo{{else}}stacked{{/match}}{{#match @custom.title_font "=" "Elegant serif"}} has-serif-title{{/match}}{{#match @custom.body_font "=" "Elegant serif"}} has-serif-body{{/match}}{{^is "home"}}{{#if @site.cover_image}} is-head-brand{{/if}}{{/is}}">
@@ -42,26 +34,15 @@
                         {{/if}}
                     </a>
                 </div>
-                <button class="gh-search gh-icon-btn" aria-label="{{t "Search this site"}}" data-ghost-search>{{> "icons/search"}}</button>
                 <button class="gh-burger" aria-label="{{t "Toggle menu"}}"></button>
             </div>
 
             <nav class="gh-head-menu">
                 {{navigation}}
-                {{#unless @site.members_enabled}}
-                    {{#match @custom.navigation_layout "Stacked"}}
-                        <button class="gh-search gh-icon-btn" aria-label="{{t "Search this site"}}" data-ghost-search>{{> "icons/search"}}</button>
-                    {{/match}}
-                {{/unless}}
             </nav>
 
             <div class="gh-head-actions">
-                {{#unless @site.members_enabled}}
-                    {{^match @custom.navigation_layout "Stacked"}}
-                        <button class="gh-search gh-icon-btn" aria-label="{{t "Search this site"}}" data-ghost-search>{{> "icons/search"}}</button>
-                    {{/match}}
-                {{else}}
-                    <button class="gh-search gh-icon-btn" aria-label="{{t "Search this site"}}" data-ghost-search>{{> "icons/search"}}</button>
+                {{#if @site.members_enabled}}
                     <div class="gh-head-members">
                         {{#unless @member}}
                             {{#unless @site.members_invite_only}}
@@ -74,7 +55,7 @@
                             <a class="gh-head-btn gh-btn gh-primary-btn" href="#/portal/account" data-portal="account">{{t "Account"}}</a>
                         {{/unless}}
                     </div>
-                {{/unless}}
+                {{/if}}
             </div>
         </div>
     </header>
@@ -118,14 +99,8 @@
 
 {{#is "post, page"}}
     {{> "pswp"}}
+    <script src="{{asset "built/photoswipe.min.js"}}" defer></script>
 {{/is}}
-
-{{!-- Fixes 100vh issue on mobile browsers with toolbar on the bottom --}}
-<script>
-    if (document.body.classList.contains('with-full-cover') && (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.platform))) {
-        document.getElementsByClassName('cover')[0].style.height = window.innerHeight + 'px';
-    }
-</script>
 
 <script src="{{asset "built/main.min.js"}}" defer></script>
 

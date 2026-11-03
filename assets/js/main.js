@@ -1,10 +1,9 @@
 var html = document.documentElement;
 var body = document.body;
-var timeout;
-var st = 0;
 
 cover();
 featured();
+portalButton();
 pagination(false, function () {
     // "Load more" fetches and appends post cards without a full page
     // reload, so re-run this to label the newly-added external badges.
@@ -14,29 +13,34 @@ fixNavMoreToggleA11y();
 labelExternalHosts();
 fixGalleryLightbox();
 
-window.addEventListener('scroll', function () {
+function prefersReducedMotion() {
     'use strict';
-    if (body.classList.contains('home-template') && body.classList.contains('with-full-cover') && !document.querySelector('.cover').classList.contains('half')) {
-        if (timeout) {
-            window.cancelAnimationFrame(timeout);
-        }
-        timeout = window.requestAnimationFrame(portalButton);
-    }
-});
-
-if (document.querySelector('.cover') && document.querySelector('.cover').classList.contains('half')) {
-    body.classList.add('portal-visible');
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
 function portalButton() {
     'use strict';
-    st = window.scrollY;
+    var cover = document.querySelector('.cover');
+    if (!cover) return;
 
-    if (st > 300) {
+    if (cover.classList.contains('half')) {
         body.classList.add('portal-visible');
-    } else {
-        body.classList.remove('portal-visible');
+        return;
     }
+
+    if (!body.classList.contains('home-template') || !body.classList.contains('with-full-cover')) return;
+
+    // Show the Portal button once the reader has scrolled 300px into the
+    // full-screen cover. A sentinel at that offset (see misc/portal.css) is
+    // watched instead of running a handler on every scroll event.
+    var sentinel = document.createElement('div');
+    sentinel.className = 'cover-sentinel';
+    cover.appendChild(sentinel);
+
+    new IntersectionObserver(function (entries) {
+        var entry = entries[0];
+        body.classList.toggle('portal-visible', !entry.isIntersecting && entry.boundingClientRect.top < 0);
+    }).observe(sentinel);
 }
 
 function cover() {
@@ -50,7 +54,7 @@ function cover() {
 
     document.querySelector('.cover-arrow').addEventListener('click', function () {
         var element = cover.nextElementSibling;
-        element.scrollIntoView({behavior: 'smooth', block: 'start'});
+        element.scrollIntoView({behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start'});
     });
 }
 
@@ -126,28 +130,54 @@ function fixGalleryLightbox() {
 
 function featured() {
     'use strict';
+    // The featured feed is a native CSS scroll-snap carousel (see
+    // blog/featured.css), so it works without JS; this only adds the
+    // prev/next buttons, which stay hidden if this never runs.
     var feed = document.querySelector('.featured-feed');
-    if (!feed) return;
+    var controls = document.querySelector('.featured-controls');
+    if (!feed || !controls) return;
 
-    tns({
-        container: feed,
-        controlsText: [
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M20.547 22.107L14.44 16l6.107-6.12L18.667 8l-8 8 8 8 1.88-1.893z"></path></svg>',
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M11.453 22.107L17.56 16l-6.107-6.12L13.333 8l8 8-8 8-1.88-1.893z"></path></svg>',
-        ],
-        gutter: 30,
-        loop: false,
-        nav: false,
-        responsive: {
-            0: {
-                items: 1,
-            },
-            768: {
-                items: 2,
-            },
-            992: {
-                items: 3,
-            },
-        },
+    var slides = feed.children;
+    var first = slides[0];
+    var last = slides[slides.length - 1];
+    var prev = controls.querySelector('[data-controls="prev"]');
+    var next = controls.querySelector('[data-controls="next"]');
+
+    // aria-disabled instead of the disabled attribute: a disabled button
+    // drops keyboard focus to <body> when the user reaches either end.
+    var isDisabled = function (button) {
+        return button.getAttribute('aria-disabled') === 'true';
+    };
+
+    var slideBy = function (direction) {
+        // One slide (plus the gap) per click. The target is an absolute slide
+        // index rather than a relative scrollBy(), so a click during a smooth
+        // scroll continues from the slide being scrolled to, not from the
+        // mid-animation offset (which scroll snapping would round back).
+        var step = slides.length > 1 ? slides[1].offsetLeft - first.offsetLeft : feed.clientWidth;
+        var position = feed.scrollLeft / step;
+        var index = direction > 0 ? Math.ceil(position - 0.05) : Math.floor(position + 0.05);
+        feed.scrollTo({left: (index + direction) * step, behavior: prefersReducedMotion() ? 'auto' : 'smooth'});
+    };
+
+    prev.addEventListener('click', function () {
+        if (!isDisabled(prev)) slideBy(-1);
     });
+    next.addEventListener('click', function () {
+        if (!isDisabled(next)) slideBy(1);
+    });
+
+    // Disable a button once the first/last slide is fully in view, and hide
+    // both when everything fits, without listening to scroll events.
+    var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            var inView = String(entry.intersectionRatio >= 0.95);
+            if (entry.target === first) prev.setAttribute('aria-disabled', inView);
+            if (entry.target === last) next.setAttribute('aria-disabled', inView);
+        });
+        controls.hidden = isDisabled(prev) && isDisabled(next);
+    }, {root: feed, threshold: [0, 0.95]});
+
+    observer.observe(first);
+    observer.observe(last);
 }

@@ -6,7 +6,10 @@
     <div class="cover-content">
         {{#if @site.icon}}
             <div class="cover-icon">
-                <img class="cover-icon-image" src="{{@site.icon}}" alt="{{@site.title}}" fetchpriority="high">
+                {{!-- Ghost requires a square site icon. Explicit dimensions reserve its
+                space before it loads, so it can't push the page down (CLS); 341px is
+                the size the 256pt SVG icon renders at intrinsically. --}}
+                <img class="cover-icon-image" src="{{@site.icon}}" alt="{{@site.title}}" width="341" height="341" fetchpriority="high">
             </div>
         {{/if}}
 
