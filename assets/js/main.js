@@ -149,15 +149,27 @@ function featured() {
         return button.getAttribute('aria-disabled') === 'true';
     };
 
+    // The slide index the last click is scrolling to. A click during that
+    // smooth scroll continues from it, rather than from the mid-animation
+    // offset (which scroll snapping would round back). Forgotten once the
+    // scroll settles, or when the reader scrolls the feed themselves.
+    var target = null;
+    ['scrollend', 'wheel', 'touchstart', 'pointerdown', 'keydown'].forEach(function (type) {
+        feed.addEventListener(type, function () {
+            target = null;
+        }, {passive: true});
+    });
+
     var slideBy = function (direction) {
-        // One slide (plus the gap) per click. The target is an absolute slide
-        // index rather than a relative scrollBy(), so a click during a smooth
-        // scroll continues from the slide being scrolled to, not from the
-        // mid-animation offset (which scroll snapping would round back).
+        // One slide (plus the gap) per click.
         var step = slides.length > 1 ? slides[1].offsetLeft - first.offsetLeft : feed.clientWidth;
+        var maxIndex = Math.round((feed.scrollWidth - feed.clientWidth) / step);
         var position = feed.scrollLeft / step;
-        var index = direction > 0 ? Math.ceil(position - 0.05) : Math.floor(position + 0.05);
-        feed.scrollTo({left: (index + direction) * step, behavior: prefersReducedMotion() ? 'auto' : 'smooth'});
+        // Without scrollend support (older Safari), a target that has been
+        // reached is treated as settled.
+        var from = target !== null && Math.abs(position - target) > 0.01 ? target : Math.round(position);
+        target = Math.max(0, Math.min(from + direction, maxIndex));
+        feed.scrollTo({left: target * step, behavior: prefersReducedMotion() ? 'auto' : 'smooth'});
     };
 
     prev.addEventListener('click', function () {
