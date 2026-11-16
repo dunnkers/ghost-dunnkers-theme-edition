@@ -53,3 +53,11 @@
     border: 0;
     outline: none;
 }
+
+/* Upstream button.css gives every .gh-btn var(--color-white) text, which is
+   the page background (black) in dark mode; .gh-primary-btn keeps the accent
+   background, so header Subscribe/Sign in/Account would be black on pink.
+   Text on the accent stays white in both schemes. */
+.gh-primary-btn {
+    color: var(--on-accent-color);
+}

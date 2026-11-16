@@ -28,24 +28,19 @@
     display: contents;
 }
 
-/* Upstream header.css colors the brand header's (accent background) text with
-   --color-white, which flips to black in dark mode, and hard-codes a white
-   dropdown with dark links. Keep text on the accent white in both schemes and
-   theme the dropdown from the palette. */
-.is-head-brand:not(.is-head-transparent) .gh-head-logo,
-.is-head-brand:not(.is-head-transparent) .gh-head-logo a,
-.is-head-brand:not(.is-head-transparent) .gh-head .nav a,
-.is-head-brand:not(.is-head-transparent) .gh-head-description,
-.is-head-brand:not(.is-head-transparent) .gh-social,
-.is-head-brand:not(.is-head-transparent) .nav-more-toggle,
-.is-head-brand:not(.is-head-transparent) .gh-head-link {
-    color: var(--on-accent-color);
+/* Upstream header.css colors everything on the brand header's accent
+   background (logo, nav, search, burger, links) with --color-white, which is
+   the page background (black) in dark mode. Inside the header, point that
+   token back at the on-accent white instead of re-listing upstream's
+   selectors. Set on .gh-head-inner, not .gh-head, so the header's own
+   background (also var(--color-white) upstream) is untouched; the dropdown
+   below uses --white-color directly, so it still follows the page. */
+.is-head-brand:not(.is-head-transparent) .gh-head-inner {
+    --color-white: var(--on-accent-color);
 }
 
-.is-head-brand:not(.is-head-transparent) .gh-burger::before,
-.is-head-brand:not(.is-head-transparent) .gh-burger::after {
-    background-color: var(--on-accent-color);
-}
+/* Upstream hard-codes a white dropdown with dark links: theme it from the
+   palette. */
 
 .gh-dropdown {
     background-color: var(--white-color);
