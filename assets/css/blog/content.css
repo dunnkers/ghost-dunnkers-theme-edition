@@ -136,3 +136,20 @@
 .gh-cta-gradient {
     background: linear-gradient(180deg, transparent, var(--white-color));
 }
+
+/* Several posts link their GitHub repo with a 32px GitHub logo uploaded as
+   github32-*.png. Show GitHub's own official mark instead (the "Invertocat",
+   unmodified from GitHub's logo package, in assets/images/): black in light
+   mode, white in dark mode. object-position pushes the uploaded PNG's pixels
+   out of its 32px box (the <img>, its size, alt text and link stay as they
+   are), and the official mark is painted as the box's background. */
+.gh-content img[src*="/github32"] {
+    object-position: -9999px 0;
+    background: url("../images/github-invertocat-black.svg") center / contain no-repeat;
+}
+
+@media (prefers-color-scheme: dark) {
+    .gh-content img[src*="/github32"] {
+        background-image: url("../images/github-invertocat-white.svg");
+    }
+}
