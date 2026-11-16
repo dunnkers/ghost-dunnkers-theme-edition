@@ -27,3 +27,31 @@
 .nav-more-toggle-wrap {
     display: contents;
 }
+
+/* Upstream header.css colors the brand header's (accent background) text with
+   --color-white, which flips to black in dark mode, and hard-codes a white
+   dropdown with dark links. Keep text on the accent white in both schemes and
+   theme the dropdown from the palette. */
+.is-head-brand:not(.is-head-transparent) .gh-head-logo,
+.is-head-brand:not(.is-head-transparent) .gh-head-logo a,
+.is-head-brand:not(.is-head-transparent) .gh-head .nav a,
+.is-head-brand:not(.is-head-transparent) .gh-head-description,
+.is-head-brand:not(.is-head-transparent) .gh-social,
+.is-head-brand:not(.is-head-transparent) .nav-more-toggle,
+.is-head-brand:not(.is-head-transparent) .gh-head-link {
+    color: var(--on-accent-color);
+}
+
+.is-head-brand:not(.is-head-transparent) .gh-burger::before,
+.is-head-brand:not(.is-head-transparent) .gh-burger::after {
+    background-color: var(--on-accent-color);
+}
+
+.gh-dropdown {
+    background-color: var(--white-color);
+    box-shadow: 0 0 0 1px var(--light-gray-color), 0 7px 20px -5px rgba(0, 0, 0, 0.15);
+}
+
+.gh-dropdown li a {
+    color: var(--darker-gray-color) !important;
+}

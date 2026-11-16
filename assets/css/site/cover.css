@@ -102,7 +102,7 @@ body:not(.with-full-cover) .cover {
 }
 
 .with-full-cover .cover-form input {
-    background-color: #fff;
+    background-color: var(--white-color);
     border-color: transparent;
 }
 
@@ -140,5 +140,14 @@ body:not(.with-full-cover) .cover {
 @media (max-width: 991px) {
     .menu-opened .cover {
         margin-top: 0;
+    }
+}
+
+/* The site icon shown on the cover is black line art (a single #000 fill),
+   which would vanish against the black dark-mode page: invert it to white.
+   Revisit if the site icon is ever swapped for a colored/photographic one. */
+@media (prefers-color-scheme: dark) {
+    body:not(.with-full-cover) .cover-icon-image {
+        filter: invert(1);
     }
 }

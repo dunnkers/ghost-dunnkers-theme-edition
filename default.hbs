@@ -4,6 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    {{!-- Dark mode follows the system setting. Declaring both schemes up front
+    lets the browser paint the right canvas color before the stylesheet loads,
+    and theme-color matches the browser's own UI to the page background. --}}
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#fff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000" media="(prefers-color-scheme: dark)">
     <title>{{meta_title page=(t " (Page %)")}}</title>
 
     <link rel="stylesheet" href="{{asset "built/screen.css"}}">

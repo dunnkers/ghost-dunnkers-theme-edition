@@ -331,7 +331,7 @@
     color: var(--darker-gray-color);
     text-transform: uppercase;
     letter-spacing: 0.05rem;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: color-mix(in srgb, var(--white-color) 80%, transparent);
     backdrop-filter: blur(3px);
 }
 

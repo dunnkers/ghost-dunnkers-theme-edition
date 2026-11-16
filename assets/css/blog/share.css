@@ -16,7 +16,7 @@
     font-size: 1.1rem;
     font-weight: 800;
     line-height: 0;
-    color: var(--white-color);
+    color: var(--on-accent-color);
     text-transform: uppercase;
     letter-spacing: 0.04rem;
     border-radius: 3px;

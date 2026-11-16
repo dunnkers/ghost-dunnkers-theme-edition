@@ -14,7 +14,7 @@
     color: currentColor;
     font-family: inherit;
     text-decoration: none;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--light-gray-color);
 }
 
 .kg-bookmark-container:hover {
@@ -85,17 +85,18 @@
 }
 
 /* The raw accent color fails WCAG AA contrast (4.5:1) for body text against
-   white and against the light-gray inline-code background — darken it here
-   for text specifically, while leaving --ghost-accent-color untouched for
+   white and against the light-gray inline-code background — use --link-color
+   (darkened in light mode, the raw accent in dark mode; see basics.css) for
+   text specifically, while leaving --ghost-accent-color untouched for
    buttons/borders/other UI elements. Selectors are deliberately more specific
    than the upstream `.gh-content a` / `code` rules (rather than reusing them)
    so cssnano's rule-merging can't collapse the override away.  */
 .single-content.gh-content a {
-    color: color-mix(in srgb, var(--ghost-accent-color) 80%, black);
+    color: var(--link-color);
 }
 
 .single-content.gh-content code {
-    color: color-mix(in srgb, var(--ghost-accent-color) 80%, black);
+    color: var(--link-color);
 }
 
 /* Restore the intentionally muted (dark, no-underline) caption-link style —
@@ -119,4 +120,19 @@
    `.kg-product-card` too so this rule's class count (0,3,0) beats it. */
 .single-content .kg-product-card .kg-product-card-btn-accent {
     background-color: color-mix(in srgb, var(--ghost-accent-color) 80%, black);
+}
+
+/* Upstream content.css/cta.css hard-code white for the table edge fades and
+   the fade above the members CTA, which would paint white bands over a dark
+   page. Same selectors, re-pointed at the page background. */
+.gh-content table:not(.gist table) td:first-child {
+    background-image: linear-gradient(to right, var(--white-color) 50%, transparent 100%);
+}
+
+.gh-content table:not(.gist table) td:last-child {
+    background-image: linear-gradient(to left, var(--white-color) 50%, transparent 100%);
+}
+
+.gh-cta-gradient {
+    background: linear-gradient(180deg, transparent, var(--white-color));
 }
