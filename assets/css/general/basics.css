@@ -38,6 +38,11 @@
        enough to pass WCAG AA against white and the light-gray code chip. */
     --on-accent-color: #fff;
     --link-color: color-mix(in srgb, var(--ghost-accent-color) 80%, black);
+    /* Related-posts calendar date (on the --lighter-gray-color box): the raw
+       accent (#FF1A75) is only 3.44:1 there; #D4085E is the closest shade that
+       passes AA (4.86:1). Hand-picked for the current accent, so revisit if the
+       accent color changes in Ghost settings. */
+    --date-color: #D4085E;
 
     /* Point @tryghost/shared-theme-assets' own palette at this theme's, so
        the dark-mode block below re-themes the shared components too (header,
@@ -85,6 +90,8 @@
         /* The raw accent already passes AA on black (and on the #111 code
            chip); darkening it, as in light mode, would make it fail. */
         --link-color: var(--ghost-accent-color);
+        /* The raw accent passes on the #111 date box (5.09:1); #D4085E would not. */
+        --date-color: var(--brand-color);
     }
 
     /* Transparent diagrams/screenshots (often black line art) would disappear
