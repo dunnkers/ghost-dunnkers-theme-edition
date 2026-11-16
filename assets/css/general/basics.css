@@ -94,14 +94,23 @@
         --date-color: var(--brand-color);
     }
 
-    /* Transparent diagrams/screenshots (often black line art) would disappear
-       against a black page, so give them the white backing they were drawn
-       for. Limited to formats that commonly carry transparency, so photos
-       (JPEG/WebP) don't get a white box while they load. Bookmark cards are
-       excluded: their favicons and thumbnails sit on the card, not on a figure.
-       So is the GitHub logo, which is swapped for GitHub's official white
-       mark instead (see blog/content.css). */
-    .gh-content :is(img[src*=".png"], img[src*=".svg"], img[src*=".gif"]):not(.kg-bookmark-card img, img[src*="/github32"]) {
+    /* Transparent diagrams/plots uploaded before dark mode existed (often
+       black line art) would disappear against a black page, so give them the
+       white backing they were drawn for.
+
+       - Only uploads before November 2026: Ghost stores each upload under
+         /content/images/YYYY/MM/ (also inside resized /size/wNNN/ URLs) and
+         never moves it, so the upload month is in the URL for good. CSS can't
+         compare dates, so the folders up to the cutoff are listed: whole
+         years, then "/2026/0" (months 01-09, which are zero-padded) and
+         "/2026/10/". Images uploaded from November 2026 on get no backing:
+         make those work on both a white and a black background.
+       - Only formats that commonly carry transparency, so photos (JPEG/WebP)
+         don't get a white box while they load.
+       - Not bookmark cards (their favicons/thumbnails sit on the card), nor
+         the GitHub logo, which is swapped for GitHub's official white mark
+         (see blog/content.css). */
+    .gh-content img[src*="/content/images/"]:is([src*="/2021/"], [src*="/2022/"], [src*="/2023/"], [src*="/2024/"], [src*="/2025/"], [src*="/2026/0"], [src*="/2026/10/"]):is([src*=".png"], [src*=".svg"], [src*=".gif"]):not(.kg-bookmark-card img, [src*="/github32"]) {
         background-color: #fff;
     }
 }
