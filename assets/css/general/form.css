@@ -55,7 +55,7 @@ textarea {
     padding: 0 15px;
     font-size: 1.3rem;
     font-weight: 800;
-    color: var(--white-color);
+    color: var(--on-accent-color);
     text-transform: uppercase;
     cursor: pointer;
     background-color: var(--brand-color);

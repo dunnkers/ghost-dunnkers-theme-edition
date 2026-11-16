@@ -102,7 +102,7 @@ body:not(.with-full-cover) .cover {
 }
 
 .with-full-cover .cover-form input {
-    background-color: #fff;
+    background-color: var(--white-color);
     border-color: transparent;
 }
 
@@ -140,5 +140,17 @@ body:not(.with-full-cover) .cover {
 @media (max-width: 991px) {
     .menu-opened .cover {
         margin-top: 0;
+    }
+}
+
+/* The site icon shown on the cover is single-color black line art (an SVG
+   with one #000 fill), which would vanish against the black dark-mode page.
+   invert(p) maps that black to a gray of lightness p: 0.64 gives #a3a3a3,
+   the dark-mode muted-text color, which is softer than pure white. Scoped to
+   SVG icons so a future photographic (PNG/JPEG/WebP) site icon isn't turned
+   into a negative. */
+@media (prefers-color-scheme: dark) {
+    body:not(.with-full-cover) .cover-icon-image[src$=".svg"] {
+        filter: invert(0.64);
     }
 }

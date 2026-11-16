@@ -27,3 +27,26 @@
 .nav-more-toggle-wrap {
     display: contents;
 }
+
+/* Upstream header.css colors everything on the brand header's accent
+   background (logo, nav, search, burger, links) with --color-white, which is
+   the page background (black) in dark mode. Inside the header, point that
+   token back at the on-accent white instead of re-listing upstream's
+   selectors. Set on .gh-head-inner, not .gh-head, so the header's own
+   background (also var(--color-white) upstream) is untouched; the dropdown
+   below uses --white-color directly, so it still follows the page. */
+.is-head-brand:not(.is-head-transparent) .gh-head-inner {
+    --color-white: var(--on-accent-color);
+}
+
+/* Upstream hard-codes a white dropdown with dark links: theme it from the
+   palette. */
+
+.gh-dropdown {
+    background-color: var(--white-color);
+    box-shadow: 0 0 0 1px var(--light-gray-color), 0 7px 20px -5px rgba(0, 0, 0, 0.15);
+}
+
+.gh-dropdown li a {
+    color: var(--darker-gray-color) !important;
+}

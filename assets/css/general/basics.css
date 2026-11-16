@@ -31,6 +31,88 @@
     --navbar-height: 80px;
     --content-font-size: 1.7rem;
     --header-spacing: 6vmin;
+
+    /* Colors that keep their meaning in both schemes, rather than being a
+       shade on the gray scale: text on accent/brand-colored backgrounds
+       stays white, and link/inline-code text is the accent darkened just
+       enough to pass WCAG AA against white and the light-gray code chip. */
+    --on-accent-color: #fff;
+    --link-color: color-mix(in srgb, var(--ghost-accent-color) 80%, black);
+    /* Related-posts calendar date (on the --lighter-gray-color box): the raw
+       accent (#FF1A75) is only 3.44:1 there; #D4085E is the closest shade that
+       passes AA (4.86:1). Hand-picked for the current accent, so revisit if the
+       accent color changes in Ghost settings. */
+    --date-color: #D4085E;
+
+    /* Point @tryghost/shared-theme-assets' own palette at this theme's, so
+       the dark-mode block below re-themes the shared components too (header,
+       buttons, pre/code, tables, CTA, footer). --color-darkgrey is a typo in
+       upstream content.css that otherwise resolves to nothing. */
+    --color-primary-text: var(--primary-text-color);
+    --color-white: var(--white-color);
+    --color-lighter-gray: var(--lighter-gray-color);
+    --color-light-gray: var(--light-gray-color);
+    --color-mid-gray: var(--mid-gray-color);
+    --color-dark-gray: var(--dark-gray-color);
+    --color-darker-gray: var(--darker-gray-color);
+    --color-darkgrey: var(--darker-gray-color);
+    --color-black: var(--black-color);
+    /* Background of Ghost's bookmark/file/audio/product cards (shared card.css). */
+    --background-color: var(--white-color);
+
+    /* Lets the browser theme its own UI (scrollbars, form controls, the
+       canvas behind the page) to match the system light/dark setting. */
+    color-scheme: light dark;
+}
+
+/* Dark mode follows the system setting (no toggle). Every color below is
+   consumed through the variables above, so flipping the gray scale here
+   re-themes the whole site: "white" is the page background, the grays are
+   surfaces and borders, and "darker gray" is heading text. Page, header and
+   footer are pure black (#000); slightly raised surfaces (code blocks,
+   badges, inputs) are near-black so they still read as separate. */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary-text-color: #d6d6d6;
+        --secondary-text-color: #a3a3a3;
+        --color-secondary-text: #a3a3a3;
+        --white-color: #000;
+        --lighter-gray-color: #111;
+        --light-gray-color: #262626;
+        --mid-gray-color: #404040;
+        --dark-gray-color: #bdbdbd;
+        --darker-gray-color: #f0f0f0;
+        --black-color: #fff;
+        /* Black share buttons would vanish against the black page. */
+        --threads-color: #333;
+        --tiktok-color: #333;
+        --instagram-color: #333;
+        /* The raw accent already passes AA on black (and on the #111 code
+           chip); darkening it, as in light mode, would make it fail. */
+        --link-color: var(--ghost-accent-color);
+        /* The raw accent passes on the #111 date box (5.09:1); #D4085E would not. */
+        --date-color: var(--brand-color);
+    }
+
+    /* Transparent diagrams/plots uploaded before dark mode existed (often
+       black line art) would disappear against a black page, so give them the
+       white backing they were drawn for.
+
+       - Only uploads before November 2026: Ghost stores each upload under
+         /content/images/YYYY/MM/ (also inside resized /size/wNNN/ URLs) and
+         never moves it, so the upload month is in the URL for good. CSS can't
+         compare dates, so the folders up to the cutoff are listed: whole
+         years, then "/2026/0" (months 01-09, which are zero-padded) and
+         "/2026/10/". Images uploaded from November 2026 on get no backing:
+         make those work on both a white and a black background.
+       - Only formats that commonly carry transparency, so photos (JPEG/WebP)
+         don't get a white box while they load.
+       - Not bookmark cards (their favicons/thumbnails sit on the card), nor
+         the GitHub logo, which is swapped for GitHub's official white mark
+         (see blog/content.css). */
+    .gh-content img[src*="/content/images/"]:is([src*="/2021/"], [src*="/2022/"], [src*="/2023/"], [src*="/2024/"], [src*="/2025/"], [src*="/2026/0"], [src*="/2026/10/"]):is([src*=".png"], [src*=".svg"], [src*=".gif"]):not(.kg-bookmark-card img, [src*="/github32"]) {
+        background-color: #fff;
+    }
 }
 
 .is-head-brand {
