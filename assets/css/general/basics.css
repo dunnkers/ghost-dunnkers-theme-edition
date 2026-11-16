@@ -99,16 +99,20 @@
        for. Limited to formats that commonly carry transparency, so photos
        (JPEG/WebP) don't get a white box while they load. Bookmark cards are
        excluded: their favicons and thumbnails sit on the card, not on a figure.
-       So is the GitHub logo below, which is recolored instead of boxed. */
+       So is the GitHub logo, which gets its own backing below. */
     .gh-content :is(img[src*=".png"], img[src*=".svg"], img[src*=".gif"]):not(.kg-bookmark-card img, img[src*="/github32"]) {
         background-color: #fff;
     }
 
-    /* The small black GitHub logo (github32-*.png) that several posts use as
-       a repo link: like the cover icon, invert(0.64) turns its black into
-       #a3a3a3, the muted gray of the repo-name caption below it. */
+    /* The 32px GitHub logo (github32-*.png) that several posts use as a repo
+       link is a dark circle filling the image, with the cat cut out as
+       transparency. Put white only behind the cat, so it looks exactly like
+       the original logo with no white square around it: the cutout reaches
+       ~14px from the center and the circle's anti-aliased rim starts at
+       ~15px, so a 14.75px white disc fills the cat without showing a white
+       ring at the edge. */
     .gh-content img[src*="/github32"] {
-        filter: invert(0.64);
+        background: radial-gradient(circle closest-side, #fff 14.75px, transparent 14.75px);
     }
 }
 
